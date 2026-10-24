@@ -114,7 +114,9 @@ REPLAY_SPEED = 1.0   # 0 in tests
 
 
 def recording_key(sample: str, language: str) -> str:
-    return f"{Path(sample).stem}__{language.split(' ')[0]}"
+    """ASCII-only file key: '中文 (Chinese, Simplified)' -> 'Chinese', 'English' -> 'English'."""
+    inner = language.split("(", 1)[1].split(")")[0] if "(" in language else language
+    return f"{Path(sample).stem}__{inner.split(',')[0].split()[0]}"
 
 
 def find_recording(sample: str, language: str) -> tuple[Path | None, str]:

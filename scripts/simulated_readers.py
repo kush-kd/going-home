@@ -28,7 +28,7 @@ REC = ROOT / "data" / "recorded"
 
 CASES = [
     {
-        "sample": "05_stroke_afib_chen_guoliang.pdf", "recording": "05_stroke_afib_chen_guoliang__中文",
+        "sample": "05_stroke_afib_chen_guoliang.pdf", "recording": "05_stroke_afib_chen_guoliang__Chinese",
         "persona": "You are Mei, 52, Mr. Chen's daughter and caregiver. You read simplified Chinese fluently. You read English "
                    "slowly, only simple everyday words, and you do not know medical abbreviations such as PO, BID, QHS or PRN.",
         "questions": [
@@ -41,7 +41,7 @@ CASES = [
         ],
     },
     {
-        "sample": "02_pneumonia_diabetes_maria_garcia.pdf", "recording": "02_pneumonia_diabetes_maria_garcia__Español",
+        "sample": "02_pneumonia_diabetes_maria_garcia.pdf", "recording": "02_pneumonia_diabetes_maria_garcia__Spanish",
         "persona": "You are Rosa, 60, Maria Garcia's sister, helping her at home. You read Spanish fluently and only basic English. "
                    "You have no medical training.",
         "questions": [
