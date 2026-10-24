@@ -466,91 +466,237 @@ def report() -> str:
 
 
 def slides() -> str:
+    scale_rows = "".join(
+        f"<tr><td>{u:,} {'family' if u == 1 else 'families'}</td><td class='n'>{u * PLANS_PER_USER_MONTH:,}</td><td class='n'>{money(u * PLANS_PER_USER_MONTH * cost_per_plan, 2 if u == 1 else 0)}</td></tr>"
+        for u in users)
+    case_rows = "".join(
+        f"<tr><td>{case_title(r['sample'])}</td><td class='n'>{r['med_recall']:.0%}</td><td class='n'>{r['field_accuracy']:.0%}</td>"
+        f"<td class='n'>{r['total_tokens']:,}</td><td class='n'>{money(r['cost_usd'], 2)}</td><td class='n'>{r['elapsed_s']:.0f}s</td></tr>"
+        for r in fr)
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Going Home: slides</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/white.css">
 <style>
-:root{{--r-main-font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;--r-heading-font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;--r-main-color:#102a43;--r-heading-color:#0f766e;--r-link-color:#0f766e;--r-main-font-size:30px}}
-.reveal h1,.reveal h2{{text-transform:none;letter-spacing:-.01em;font-weight:750}} .reveal h2{{font-size:1.45em;margin-bottom:.45em}}
-.reveal .shot{{max-height:460px;border:1px solid #d9e2ec;border-radius:10px;box-shadow:0 6px 24px rgba(16,42,67,.12);margin:0}}
-.reveal .two{{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center;text-align:left}}
-.reveal .stats{{display:grid;grid-template-columns:1fr 1fr;gap:18px;text-align:left}}
-.reveal .stat{{border:1px solid #d9e2ec;border-radius:14px;padding:16px 20px}} .reveal .stat b{{display:block;font-size:1.9em;color:#b42318;line-height:1.05}} .reveal .stat span{{font-size:.62em;color:#334e68}}
-.reveal .kpis{{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:10px}} .reveal .kpi{{border:1px solid #d9e2ec;border-radius:14px;padding:14px}}
-.reveal .big{{font-size:2em;font-weight:800;color:#0f766e;line-height:1}} .reveal .lab{{font-size:.55em;color:#627d98}}
-.reveal p, .reveal li{{font-size:.8em}} .reveal .small{{font-size:.48em;color:#627d98}} .reveal .diagram{{width:100%;height:auto}}
-.reveal .quote{{font-size:.95em;color:#334e68;border-left:5px solid #0f766e;padding-left:18px;text-align:left}}
-.reveal .col{{border-radius:14px;padding:14px 18px;border:1px solid #d9e2ec;text-align:left}} .reveal .col h3{{font-size:.8em;margin:0 0 8px}}
-.reveal .do{{border-left:6px solid #0f766e}} .reveal .dont{{border-left:6px solid #b42318}} .reveal .dont h3{{color:#b42318}}
-.reveal table{{font-size:.5em}} .reveal td,.reveal th{{padding:6px 10px!important}}
+:root{{--r-main-font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;--r-heading-font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;--r-main-color:#102a43;--r-heading-color:#102a43;--r-link-color:#0f766e;--r-main-font-size:32px}}
+.reveal .slides section{{text-align:left}}
+.reveal h1,.reveal h2{{text-transform:none;letter-spacing:-.01em;font-weight:780}}
+.reveal h2{{font-size:1.2em;line-height:1.2;margin:0 0 .35em}}
+.reveal .kicker{{font-size:.5em;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#0f766e;margin-bottom:.25em}}
+.reveal .lead{{font-size:.62em;color:#334e68;margin:0 0 .6em}}
+.reveal p,.reveal li{{font-size:.68em;line-height:1.42}} .reveal ul{{margin:0 0 0 1em}}
+.reveal .src{{font-size:.44em;color:#627d98;margin-top:.5em}}
+.reveal .shot{{max-height:470px;max-width:100%;border:1px solid #d9e2ec;border-radius:8px;box-shadow:0 6px 20px rgba(16,42,67,.12);margin:0}}
+.reveal .g2{{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}}
+.reveal .g2w{{display:grid;grid-template-columns:1.25fr 1fr;gap:22px;align-items:start}}
+.reveal .g4{{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}}
+.reveal .card{{border:1px solid #d9e2ec;border-radius:12px;padding:10px 14px;background:#fff}}
+.reveal .card b.big{{display:block;font-size:1.55em;line-height:1.05;color:#b42318}}
+.reveal .card span{{font-size:.56em;color:#334e68;display:block;line-height:1.35}}
+.reveal .kpi b{{display:block;font-size:1.6em;line-height:1;color:#0f766e}} .reveal .kpi span{{font-size:.56em;color:#486581}}
+.reveal table{{font-size:.56em;border-collapse:collapse;width:100%;margin:0}}
+.reveal th{{background:#f0f4f8;color:#486581;font-size:.9em;text-transform:uppercase;letter-spacing:.04em}}
+.reveal td,.reveal th{{padding:7px 9px!important;border-bottom:1px solid #e3e8ef!important;vertical-align:top;text-align:left}}
+.reveal td.n,.reveal th.n{{text-align:right}} .reveal td.c,.reveal th.c{{text-align:center}}
+.reveal .yes{{color:#067647;font-weight:800}} .reveal .no{{color:#b42318;font-weight:800}} .reveal .part{{color:#b54708;font-weight:800}}
+.reveal tr.gh td{{background:#e6f4f1;font-weight:700}}
+.reveal .order{{font-family:ui-monospace,Menlo,monospace;font-size:.92em;color:#102a43;background:#f8fafc}}
+.reveal .tag{{display:inline-block;background:#e6f4f1;color:#0f766e;border-radius:99px;padding:2px 12px;font-size:.45em;font-weight:700}}
+.reveal .stop{{color:#b42318;font-weight:700}}
+.reveal .agent{{border:1px solid #9fd9cf;background:#f3fbf9;border-radius:10px;padding:7px 10px}} .reveal .agent b{{color:#0b5952}}
+.reveal .agent span{{display:block;font-size:.54em;color:#334e68;line-height:1.38}}
+.reveal .code{{border:1px dashed #9fb3c8;background:#f8fafc;border-radius:10px;padding:7px 10px}}
+.reveal .code span{{display:block;font-size:.54em;color:#334e68;line-height:1.38}}
+.reveal .diagram{{width:100%;height:auto;max-height:265px}}
+.reveal .note{{border-left:4px solid #0f766e;background:#f3fbf9;padding:8px 12px;border-radius:0 8px 8px 0}}
+.reveal .warn{{border-left-color:#b54708;background:#fffaeb}}
+.reveal ol.callouts{{margin:0 0 0 1.1em;padding:0}} .reveal ol.callouts li{{margin-bottom:.35em}}
 </style></head><body><div class="reveal"><div class="slides">
 
-<section><h1 style="font-size:2.7em">Going Home</h1>
-<p style="font-size:1em">Hospital discharge papers, turned into a plan a family can actually follow.</p>
-<p class="small">{AUTHOR} · Final project · {REPO}</p></section>
-
-<section><h2>Why I built this</h2>
-<div class="two"><div>
-<p class="quote">Before Yale I worked on health programs in Cambodia, Indonesia and Laos. A lot of that work was translation: making a plan usable for the people who have to act on it.</p>
-<p>Discharge is the most personal version of that problem. Mr. Chen, 79, goes home after a mini-stroke with 2 new medicines, 2 changed doses, 2 to stop, and 5 follow-up visits and tests, in shorthand like "1 tab PO BID". His daughter reads Chinese.</p>
-</div><div>{img("papers", "Discharge papers")}</div></div></section>
-
-<section><h2>Where the plan breaks at home</h2>
-<div class="stats">
-<div class="stat"><b>82%</b><span>of stopped medicines were not understood by patients after discharge (Ziaeian 2012)</span></div>
-<div class="stat"><b>49% vs 30%</b><span>of adverse events caused physical harm in patients with limited English vs English speakers (Divi 2007)</span></div>
-<div class="stat"><b>15%</b><span>of adults could organize a 7-medicine regimen into 4 daily times on their own (Wolf 2011)</span></div>
-<div class="stat"><b>2 in 3</b><span>emergency hospitalizations for drug harm in older adults involve blood thinners, antiplatelets, insulin or diabetes pills (Budnitz 2011)</span></div>
-</div></section>
-
-<section><h2>What already exists, and what's different</h2>
-<table style="font-size:.6em"><tr><th>What a family can use today</th><th>The gap</th></tr>
-<tr><td>The printed summary or patient portal</td><td>Same shorthand, no timetable, usually English only</td></tr>
-<tr><td>Reminder apps (Medisafe)</td><td>The family types in every medicine by hand</td></tr>
-<tr><td>ChatGPT or Google Translate</td><td>Nothing checks the doses; 8% of machine-translated Chinese discharge sentences could cause harm</td></tr>
-<tr><td>Hospital AI summaries</td><td>Built for clinicians; studies found omissions and invented medicines</td></tr></table>
-<p style="margin-top:16px"><b>Going Home:</b> built for the family, turns the plan into actions, and checks every dose against the source.</p></section>
-
-<section><h2>What the family gets</h2>
-<div class="two"><div>{img("zh_timetable", "Chinese timetable")}</div><div>{img("zh_warnings", "Warning signs")}</div></div>
-<p class="small">A day-by-day timetable in Chinese with a red STOP box, reminders on the phone, and a warning card that says when to call 911 and when to call the clinic.</p></section>
-
-<section><h2>How I built it</h2>{DIAGRAM}
-<p><b>AI reads and explains. Code checks.</b> The Reader (Opus) extracts every item with its source sentence. Code matches every dose, date and phone number. The Checker (Sonnet) uses its own tools to look for misses. The Explainer writes it in plain words in 11 languages.</p></section>
-
-<section><h2>It restates. It never recommends.</h2>
-<div class="two" style="align-items:start">
-<div class="col do"><h3>What it does</h3><ul><li>Restates the hospital's plan: what, how much, when, how long</li><li>Turns it into a timetable, reminders and a warning card</li><li>Asks the doctor when something is unclear</li></ul></div>
-<div class="col dont"><h3>What it never does</h3><ul><li>Diagnose or give medical advice</li><li>Change a dose or add a medicine</li><li>Show a dose it couldn't match to the papers</li></ul></div>
+<!-- 1 -->
+<section>
+<p class="kicker">Final project · {AUTHOR}</p>
+<h1 style="font-size:2.3em;margin-bottom:.1em">Going Home</h1>
+<p style="font-size:.85em;color:#334e68;margin-bottom:1em">An AI agent app that turns hospital discharge papers into the plan a family actually needs: a day-by-day medicine timetable, reminders, a warning-signs card and questions for the doctor, in their own language.</p>
+<div class="g4">
+<div class="card kpi"><b>11</b><span>languages, including the 5 most common among US residents with limited English</span></div>
+<div class="card kpi"><b>{F["med_recall"]:.0%}</b><span>of medicines found, {F["field_accuracy"]:.0%} of fields correct, on {n_cases} test cases</span></div>
+<div class="card kpi"><b>{money(cost_per_plan)}</b><span>per plan, about {F["avg_elapsed_s"]:.0f} seconds</span></div>
+<div class="card kpi"><b>31</b><span>automated safety tests; every dose, date and phone number is checked against the papers</span></div>
 </div>
-<p class="small" style="margin-top:18px">Enforced by code: unmatched items stay off the timetable; any explanation with a new number, purpose or tip is dropped; the hospital's sentence is on every card.</p></section>
+<p class="src" style="margin-top:1em">Repo: {REPO} · Synthetic patients · Built with Claude Code</p>
+</section>
 
-<section><h2>Does it work?</h2>
-<div class="kpis"><div class="kpi"><div class="big">{F["med_recall"]:.0%}</div><div class="lab">medicines found ({n_cases} test cases)</div></div>
-<div class="kpi"><div class="big">{F["field_accuracy"]:.0%}</div><div class="lab">checked fields correct</div></div>
-<div class="kpi"><div class="big">{money(cost_per_plan)}</div><div class="lab">per plan</div></div>
-<div class="kpi"><div class="big">{F["avg_elapsed_s"]:.0f}s</div><div class="lab">to a full plan</div></div></div>
-<div class="two" style="margin-top:18px"><div>{img("safety_notices", "Safety test")}</div><div><p>Hidden and visible attacks were removed before any agent read the file. 31 automated tests.</p><p class="small">The 100% is a test on five synthetic cases, not a guarantee.</p></div></div></section>
+<!-- 2 -->
+<section>
+<p class="kicker">The problem</p>
+<h2>The care plan exists, but it breaks on the way home</h2>
+<div class="g2w">
+<div>
+<div class="g2" style="gap:12px">
+<div class="card"><b class="big">1 in 5</b><span>patients has an adverse event within weeks of discharge; two-thirds involve medicines (Forster 2003)</span></div>
+<div class="card"><b class="big">82%</b><span>of medicines patients were told to <b>stop</b> were not understood, nor 69% of dose changes (Ziaeian 2012)</span></div>
+<div class="card"><b class="big">49% vs 30%</b><span>of adverse events caused physical harm for patients with limited English vs English speakers (Divi 2007)</span></div>
+<div class="card"><b class="big">15%</b><span>of adults could organize a 7-medicine regimen into 4 daily times on their own (Wolf 2011)</span></div>
+</div>
+<p style="margin-top:.7em"><b>Mr. Chen, 79</b> (synthetic), after a mini-stroke: 2 new medicines, 2 changed doses, 2 to stop, 5 follow-ups, all in shorthand. His daughter manages his care and reads Chinese best. Only 20% of caregivers even get 24 hours' notice of a discharge (AARP 2019).</p>
+</div>
+<div>{img("papers", "Mr. Chen's discharge papers")}<p class="src">Page 1 of his synthetic discharge papers</p></div>
+</div>
+</section>
 
-<section><h2>Could it save lives?</h2>
-<p style="text-align:left">Harm after discharge comes from a plan that doesn't survive the trip home. A randomized trial that gave patients a medication schedule, an appointment calendar and warning signs <b>cut hospital returns by about 30%</b> (Project RED). Going Home builds that plan automatically, in the family's language.</p>
-<table><tr><th>Per 10,000 discharges</th><th>Estimate</th></tr>
-<tr><td>Preventable drug-related readmissions</td><td>{preventable_drug:,.0f}</td></tr>
-<tr><td>Avoided if Going Home prevents {EFFECT_LOW:.0%}–{EFFECT_HIGH:.0%} (my assumption)</td><td>{avoided_low:,.0f}–{avoided_high:,.0f}</td></tr>
-<tr><td>Hospital cost avoided</td><td>{money(avoided_low * READMIT_COST / 1e6, 1)}M–{money(avoided_high * READMIT_COST / 1e6, 1)}M</td></tr>
-<tr><td>Cost of running Going Home</td><td>{money(app_cost_per_10k, 0)}</td></tr></table>
-<p class="small">HCUP 2023; El Morabet 2018; Jack 2009. Assumptions and sources are in the report.</p></section>
+<!-- 3 -->
+<section>
+<p class="kicker">What already exists</p>
+<h2>Each existing tool solves one piece; none checks the doses</h2>
+<table>
+<tr><th>What a family can use today</th><th class="c">Reads the discharge papers</th><th class="c">Checks every dose against them</th><th class="c">Daily schedule and reminders</th><th class="c">In the family's language</th><th class="c">Asks when unclear</th></tr>
+<tr><td>Printed summary / patient portal (e.g., Epic MyChart)</td><td class="c">—</td><td class="c">—</td><td class="c no">✗</td><td class="c no">✗ usually English</td><td class="c no">✗</td></tr>
+<tr><td>Reminder apps (e.g., Medisafe)</td><td class="c no">✗ typed by hand</td><td class="c no">✗</td><td class="c yes">✓</td><td class="c">—</td><td class="c no">✗</td></tr>
+<tr><td>ChatGPT or Google Translate</td><td class="c yes">✓</td><td class="c no">✗</td><td class="c part">if asked, unchecked</td><td class="c yes">✓</td><td class="c part">not reliably</td></tr>
+<tr><td>Hospital AI summaries (Epic features, research tools)</td><td class="c yes">✓</td><td class="c no">✗ omissions found</td><td class="c no">✗</td><td class="c part">reading level</td><td class="c no">✗</td></tr>
+<tr class="gh"><td>Going Home</td><td class="c yes">✓</td><td class="c yes">✓ code-verified</td><td class="c yes">✓</td><td class="c yes">✓ 11 languages</td><td class="c yes">✓</td></tr>
+</table>
+<p class="src" style="margin-top:.3em">— = not applicable or not assessed.</p>
+<p style="margin-top:.4em"><b>Why the checking matters:</b> machine translation made 8% of Chinese discharge sentences potentially harmful (Khoong 2019), and studies of AI discharge summaries found omissions and medicines that weren't in the source. Going Home is built for the family at home, and nothing reaches the timetable unless it matches the papers.</p>
+</section>
 
-<section><h2>What I learned, and what's next</h2>
-<ul style="text-align:left"><li>The worst bug was a safety filter that deleted "STOP aspirin". Checks need tests too.</li>
-<li>Giving the Checker real tools made it cheaper and more careful.</li>
-<li>Next: a pilot with discharge nurses, read-back questions, a back-translation check, and SMS reminders.</li></ul>
-<p class="small" style="margin-top:20px">Built with Claude Code as my coding assistant. Patients are synthetic; the video narration is a synthetic voice.</p></section>
+<!-- 4 -->
+<section>
+<p class="kicker">How I built it</p>
+<h2>AI reads and explains; plain code checks every step</h2>
+{DIAGRAM}
+<div class="g4" style="margin-top:6px">
+<div class="agent"><b style="font-size:.62em">Reader · Opus</b><span>Extracts every medicine, dose, schedule, taper, visit and warning, each with its exact source sentence. Opus because this is where a mistake becomes a wrong dose.</span></div>
+<div class="agent"><b style="font-size:.62em">Checker · Sonnet + tools</b><span>Looks for anything missed using real MCP tools: list_medication_lines, search_document, check_quote, verify_item. Can't report a problem without a real quote.</span></div>
+<div class="agent"><b style="font-size:.62em">Explainer · Sonnet</b><span>Writes plain words in 11 languages from verified items only; never sees the full document.</span></div>
+<div class="code"><b style="font-size:.62em">Code (no AI)</b><span>Safety screen, quote and number matching, the timetable and calendar, and a final check that throws out any new number, purpose or tip.</span></div>
+</div>
+<p class="src">All agents run on a Claude subscription via claude -p · one capped repair round · hard dollar cap per call · a Transcriber agent handles photos</p>
+</section>
+
+<!-- 5 -->
+<section>
+<p class="kicker">What the scheduling does</p>
+<h2>From hospital shorthand to what the family does at each hour</h2>
+<table>
+<tr><th>What the discharge papers say</th><th>What Going Home shows</th></tr>
+<tr><td class="order">Apixaban 5 mg: 1 tab PO BID</td><td>8:00 AM and 8:00 PM, every day, with a tick box for each dose</td></tr>
+<tr><td class="order">Atorvastatin 80 mg: 1 tab PO QHS. Dose increased from 20 mg.</td><td>9:00 PM, marked <b>Changed</b>, with the old and new dose explained</td></tr>
+<tr><td class="order">Metformin 500 mg: 1 tab PO BID with breakfast and dinner</td><td>8:00 AM and 6:00 PM, "with food"</td></tr>
+<tr><td class="order">Prednisone 10 mg: 4 tablets on 10/17–10/18, then 3, then 2, then 1, then stop</td><td>The right dose on each calendar day; the last day marked</td></tr>
+<tr><td class="order">Acetaminophen 500 mg: 1–2 tabs PO q6h PRN. Max 3,000 mg/day</td><td>Kept off the clock, in "Only if needed", with the daily limit shown</td></tr>
+<tr><td class="order">Aspirin 81 mg tab: STOP</td><td><span class="stop">Red "Stop taking these" box</span>, with the reason in the family's language</td></tr>
+<tr><td class="order">Vitamin D: take as directed</td><td>Not scheduled; becomes a <b>question for the doctor</b> instead of a guess</td></tr>
+</table>
+<p style="margin-top:.5em">Then every dose and appointment goes to the phone's calendar in one click, and a weekly chart prints for the fridge. Clock times are labeled as suggestions, and on discharge day the app reminds the family to ask which doses were already given.</p>
+</section>
+
+<!-- 6 -->
+<section>
+<p class="kicker">Demo: Mr. Chen's plan, in Chinese</p>
+<h2>What his daughter sees</h2>
+<div class="g2">
+<div>{img("zh_timetable", "Timetable in Chinese")}</div>
+<div>{img("zh_medicines", "Medicine cards in Chinese")}</div>
+</div>
+<ol class="callouts" style="margin-top:.5em">
+<li><b>Timetable</b> built by code from verified doses, with a red box for aspirin and ginkgo (both raise bleeding risk with his new blood thinner).</li>
+<li><b>Medicine cards</b> in plain Chinese, each with "What the papers say": the exact English sentence, marked ✓ matched, so a nurse can check any line.</li>
+<li>Also: a warning card (stroke signs → call 911; bleeding signs → call the clinic), 5 follow-ups on the calendar, and a "How this plan was made" tab with tokens and cost.</li>
+</ol>
+</section>
+
+<!-- 7 -->
+<section>
+<p class="kicker">Safety</p>
+<h2>It restates the hospital's plan; it never recommends</h2>
+<div class="g2w">
+<div>
+<p><b>Enforced by code, not by asking the AI nicely:</b></p>
+<ul>
+<li>Every item must be found in the papers (≥90% quote match), and every dose, date and phone number must match exactly, or it stays off the timetable.</li>
+<li>The timetable is built by code, so a translation slip can't change a dose.</li>
+<li>Any explanation with a new number, purpose or tip is thrown out and replaced with the hospital's own sentence.</li>
+<li>Vague orders become questions, never guesses.</li>
+<li>Hidden or visible prompt injection is removed before any agent reads the file; at most 1 repair round and 8 model calls per plan, and a dollar cap on every agent call.</li>
+</ul>
+<p class="note warn" style="margin-top:.6em"><b>Still possible:</b> an error in the papers is repeated faithfully; translation wording isn't machine-checked (numbers are); a blurry photo could be misread. The report lists each with its mitigation.</p>
+</div>
+<div>{img("safety_notices", "Safety test")}<p class="src">Safety test: hidden white text told the AI to give "10 tablets of every medicine". Code removed it, and a second attack, before any agent ran. 31 automated tests cover these defenses.</p></div>
+</div>
+</section>
+
+<!-- 8 -->
+<section>
+<p class="kicker">Results and cost</p>
+<h2>All five test cases fully correct, at about 20 cents a plan</h2>
+<div class="g2w">
+<div>
+<table>
+<tr><th>Test case (synthetic)</th><th class="n">Medicines</th><th class="n">Fields</th><th class="n">Tokens</th><th class="n">Cost</th><th class="n">Time</th></tr>
+{case_rows}
+</table>
+<p class="src">Checked against my hand-written answer key. A test on {n_cases} cases, not a guarantee. Token counts come from the app's own logs.</p>
+</div>
+<div>
+<table>
+<tr><th>At scale (2 plans per family per month)</th><th class="n">Plans</th><th class="n">Per month</th></tr>
+{scale_rows}
+</table>
+<p style="margin-top:.6em"><b>Cost cuts that worked:</b> Opus only for the Reader; caching (a repeat run went from $0.146 to $0.086); giving the Checker tools ({money(BT["avg_cost_usd"])} → {money(F["avg_cost_usd"])} per plan, repairs {repairs_before_tools} → {repairs_final}). A cheaper Sonnet Reader matched accuracy but needed a repair, so I kept Opus.</p>
+</div>
+</div>
+</section>
+
+<!-- 9 -->
+<section>
+<p class="kicker">Impact</p>
+<h2>It targets the four points where the plan breaks, each backed by evidence</h2>
+<table>
+<tr><th>Where it breaks</th><th>The evidence</th><th>What Going Home does</th><th>Evidence a fix like this works</th></tr>
+<tr><td>Not understanding what changed</td><td>82% of stopped medicines not understood (Ziaeian 2012)</td><td>STOP box, "Changed" badges, source sentence</td><td>Discharge counseling: preventable drug events 11% → 1% (Schnipper 2006)</td></tr>
+<tr><td>Not reading the language</td><td>Harm 49% vs 30% (Divi 2007); Chinese speakers 1.7× readmission odds (Karliner 2010)</td><td>The whole plan in 11 languages, numbers locked to the source</td><td>Bedside interpreters: readmissions 17.8% → 13.4% (Karliner 2017)</td></tr>
+<tr><td>Turning orders into a routine</td><td>Only 15% could organize a 7-drug regimen (Wolf 2011); 66% of drug-harm admissions in older adults were accidental overdoses (Budnitz 2011)</td><td>Clock times, tapers, end dates, reminders</td><td>Standard-time labels (OR 5.08 with limited literacy, Wolf 2016); text reminders double adherence odds (Thakkar 2016)</td></tr>
+<tr><td>Missing warning signs and follow-up</td><td>Only 44% recalled their appointment details (Horwitz 2013)</td><td>Warning card, calendar reminders</td><td>Stroke education shortened delays in 10 of 13 studies (Mellon 2015)</td></tr>
+</table>
+<div class="g2" style="margin-top:.55em">
+<p class="note"><b>Closest proof:</b> Project RED gave patients a medication schedule, appointment calendar and warning plan, and cut hospital returns by about 30% in a randomized trial (Jack 2009). Going Home builds that plan automatically.</p>
+<p class="note"><b>Per 10,000 discharges</b> (assuming it prevents 10–30% of preventable drug-related readmissions): {avoided_low:,.0f}–{avoided_high:,.0f} fewer readmissions, {money(avoided_low * READMIT_COST / 1e6, 1)}M–{money(avoided_high * READMIT_COST / 1e6, 1)}M saved, for {money(app_cost_per_10k, 0)} of AI cost.</p>
+</div>
+</section>
+
+<!-- 10 -->
+<section>
+<p class="kicker">What I learned, and what's next</p>
+<h2>Verification mattered more than generation</h2>
+<div class="g2">
+<div>
+<p><b>Three lessons from real runs</b></p>
+<ul>
+<li>My worst bug was a safety filter that deleted "Aspirin: STOP. <i>You are now</i> on apixaban". Safety checks need their own tests.</li>
+<li>Giving the Checker real tools made it cheaper and more careful at the same time.</li>
+<li>The cheaper model's mistakes were caught by code, which taught me to trust checks over prompts.</li>
+</ul>
+<p style="margin-top:.6em"><b>Honest limits:</b> 5 synthetic cases, 1 attack file and 1 photo; no real-user test yet; the impact numbers are estimates; live mode needs a Claude login (demo mode replays real recorded runs).</p>
+</div>
+<div>
+<p><b>With another month</b></p>
+<ul>
+<li>A pilot with discharge nurses, who review the plan at the bedside</li>
+<li>A real caregiver test: time and correct answers with and without the app</li>
+<li>Read-back questions ("what do you stop?") flagged to the care team</li>
+<li>A back-translation check and SMS reminders</li>
+</ul>
+<p class="tag" style="margin-top:1em">Going Home doesn't replace the care team. It makes sure the family leaves with the plan they were given.</p>
+</div>
+</div>
+<p class="src">Built with Claude Code as my coding assistant. Patients are synthetic; the video narration is a synthetic voice. Sources for every number are in the report and docs/research_evidence.md.</p>
+</section>
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
-<script>Reveal.initialize({{hash:true, width:1280, height:760, margin:0.05}});</script>
+<script>Reveal.initialize({{hash:true, width:1280, height:760, margin:0.04, center:true}});</script>
 </body></html>"""
 
 
