@@ -174,6 +174,13 @@ run.py            start the server
 
 The test dataset is the six PDFs in `data/samples/` (about 40 KB in total): heart failure, pneumonia with diabetes (Spanish reader), hip replacement, a COPD steroid taper, a stroke warning with a new blood thinner (Chinese reader), and a prompt-injection safety test. There is no large dataset: real users upload their own papers. To regenerate the samples, run `python scripts/make_samples.py`.
 
+## Disclosures
+
+- Built with Claude Code as a coding assistant; Claude also helped research and draft the report and slides. Every number was checked against the run logs (`docs/results/`) or the cited source (`docs/research_evidence.md`).
+- All patients and discharge documents are synthetic.
+- The demo video is a screen recording of real runs on the author's computer. Agent waiting time is sped up and labeled, and the narration is a synthetic voice (Kokoro, open source).
+- The simulated reader study uses AI personas and is labeled as such. No real-user test has been run yet.
+
 ## Limits
 
 - Handwriting and very blurry photos may not transcribe well; the app asks for a better photo rather than guessing.
