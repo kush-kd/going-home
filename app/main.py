@@ -14,8 +14,11 @@ from . import config, llm, pipeline
 
 app = FastAPI(title="Going Home")
 
-LANGUAGES = ["English", "Español (Spanish)", "हिन्दी (Hindi)", "中文 (Chinese, Simplified)", "Tiếng Việt (Vietnamese)",
-             "Português (Portuguese)", "Français (French)", "Kreyòl ayisyen (Haitian Creole)", "العربية (Arabic)"]
+# The five most common languages among US residents with limited English come first (Spanish, Chinese,
+# Vietnamese, Korean, Tagalog: over 75% of that population, Migration Policy Institute 2025).
+LANGUAGES = ["English", "Español (Spanish)", "中文 (Chinese, Simplified)", "Tiếng Việt (Vietnamese)", "한국어 (Korean)",
+             "Tagalog (Filipino)", "हिन्दी (Hindi)", "العربية (Arabic)", "Kreyòl ayisyen (Haitian Creole)",
+             "Português (Portuguese)", "Français (French)"]
 
 _tasks: set[asyncio.Task] = set()
 

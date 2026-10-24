@@ -54,6 +54,12 @@ OVERLAY_JS = r"""
     document.body.appendChild(m);
   };
   window.__unmodal = () => { const m = document.getElementById('__modal'); if (m) m.remove(); };
+  window.__card = (html) => {
+    const c = document.createElement('div'); c.id = '__card';
+    c.style.cssText = 'position:fixed;inset:0;z-index:99999;background:linear-gradient(135deg,#0b5952,#102a43);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:70px 110px;font:400 25px/1.45 -apple-system,Segoe UI,sans-serif;opacity:0;transition:opacity .35s';
+    c.innerHTML = html; document.body.appendChild(c); requestAnimationFrame(() => c.style.opacity = 1);
+  };
+  window.__uncard = () => { const c = document.getElementById('__card'); if (c) { c.style.opacity = 0; setTimeout(() => c.remove(), 350); } };
 })();
 """
 
@@ -96,6 +102,16 @@ class Demo:
         self.click(f'#tabs [data-tab="{name}"]')
         self.page.evaluate("window.scrollTo({top: document.querySelector('.tabs').offsetTop - 70, behavior: 'smooth'})")
         self.sleep(0.8)
+
+    def card(self, title: str, lines: list[str], source: str, hold: float) -> None:
+        html_ = (f'<div style="font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:#99f6e4;font-weight:700">Why it matters</div>'
+                 f'<div style="font-size:40px;font-weight:800;margin:6px 0 22px">{title}</div>'
+                 + "".join(f'<div style="margin-bottom:14px">{ln}</div>' for ln in lines)
+                 + f'<div style="font-size:14px;color:#c7d2fe;margin-top:18px">{source}</div>')
+        self.page.evaluate("h => { window.__caption(null); window.__card(h); }", html_)
+        self.sleep(hold)
+        self.page.evaluate("window.__uncard()")
+        self.sleep(0.4)
 
     def shot(self, name: str) -> None:
         """Save a clean screenshot (no caption or pointer) for the report and slides."""
@@ -189,7 +205,7 @@ def main() -> None:
             page.evaluate("document.querySelector('.scope').scrollIntoView({block: 'center', behavior: 'smooth'})")
             d.sleep(1)
             d.move_to(".scope-col.doesnt")
-            d.cap("It only restates the hospital's plan. It never diagnoses, changes a dose, adds a medicine or gives medical advice.", 5)
+            d.cap("It only restates the hospital's plan. It never diagnoses, changes a dose, adds a medicine or gives medical advice.", 4.5)
             page.evaluate("window.scrollTo({top: 0, behavior: 'smooth'})")
             d.sleep(0.8)
 
@@ -197,6 +213,11 @@ def main() -> None:
             page.evaluate("([s, t]) => window.__modal(s, t)", [hf_png, "Synthetic discharge summary: stroke warning and new blood thinner (fictional patient)"])
             d.cap("Mr. Chen, 79, had a mini-stroke. His papers use shorthand like PO, BID and QHS.", 5)
             page.evaluate("window.__unmodal()")
+            d.card("Why her own language?", [
+                "In US hospitals, <b>49%</b> of adverse events among patients with limited English caused physical harm, vs <b>30%</b> for English speakers.",
+                "Chinese-speaking patients had <b>1.7×</b> the odds of being readmitted within 30 days.",
+                "At discharge, family members often interpret. In one study, <b>77%</b> of errors by untrained interpreters, such as family, could have clinical consequences, like a dropped dose or duration.",
+            ], "Divi 2007, Int J Qual Health Care · Karliner 2010, J Hosp Med · Flores 2003, Pediatrics", 9)
 
             # 3. Pick Chinese and start
             d.cap("His daughter reads simplified Chinese, so we choose Chinese…", 0)
@@ -213,7 +234,12 @@ def main() -> None:
             page.evaluate("window.scrollTo(0, 0)")
             d.sleep(0.5)
             d.shot("zh_top")
-            d.cap("✅ Every medicine was found in the papers, and every dose, date and phone number matches them exactly.", 4)
+            d.cap("✅ Every medicine was found in the papers, and every dose, date and phone number matches them exactly.", 3.5)
+            d.card("What the timetable does", [
+                "The papers say <i>“1 tab PO BID”</i>, <i>“QHS”</i>, <i>“1–2 tabs q6h PRN”</i>. Families have to work out what that means for tonight.",
+                "Going Home turns it into clock times for each day, marks the last day of each course, keeps “only if needed” medicines off the clock, and shows in red what to <b>stop</b>.",
+                "Without help, only <b>15%</b> of adults could organize a 7-medicine regimen into 4 daily times. Patients didn’t understand <b>82%</b> of their stopped medicines.",
+            ], "Wolf 2011, Arch Intern Med · Ziaeian 2012, J Gen Intern Med", 10)
             d.tab("timetable")
             d.click(".days .day")      # discharge day
             d.sleep(0.5)
@@ -239,7 +265,7 @@ def main() -> None:
             d.cap("Warning signs: the stroke signs that mean call 911, and the bleeding signs that mean call the clinic.", 4.5)
             d.tab("appointments")
             d.shot("zh_appointments")
-            d.cap("Five follow-up visits and tests in date order.", 2.5)
+            d.cap("Five follow-up visits and tests in date order.", 2)
             d.move_to("#ics")
             d.cap("One click adds every dose and appointment to the phone’s calendar, with reminders.", 3.5)
             d.move_to("#print")
@@ -278,6 +304,12 @@ def main() -> None:
             d.tab("trace")
             d.shot("safety_trace")
             d.cap(f"This plan: {safety['total_tokens']:,} tokens, about ${safety['cost_usd']:.2f}, {safety['elapsed_s']:.0f} seconds.", 4)
+
+            d.card("Could this save lives?", [
+                "Two-thirds of emergency hospitalizations for drug harm in older adults involve <b>blood thinners, antiplatelets, insulin and diabetes pills</b>. Most were unintentional overdoses. Mr. Chen's plan has a blood thinner, a diabetes pill, and an antiplatelet he must stop.",
+                "A hospital program that gave patients a medication schedule, an appointment calendar and warning signs cut hospital returns by about <b>30%</b> in a randomized trial.",
+                "Going Home builds that plan automatically, in the family's language, for about <b>20 cents</b>.",
+            ], "Budnitz 2011, NEJM · Jack 2009 (Project RED), Ann Intern Med", 10)
 
             # 6. Close
             d.cap("<b>Going Home</b> doesn’t replace the care team. It makes sure the family leaves with the plan they were given, in words they understand.", 5)

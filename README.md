@@ -9,7 +9,7 @@ Upload a discharge summary (PDF or photo) and pick a language. Going Home's AI a
 - a **warning-signs card**: when to call the clinic, when to call 911, with tap-to-call numbers,
 - **questions for the doctor** for anything the papers leave unclear (it never guesses),
 - a **printable weekly chart** for the fridge,
-- all of it in plain words, in English, Spanish, Hindi, Chinese, Vietnamese, Portuguese, French, Haitian Creole or Arabic.
+- all of it in plain words, in English or 10 other languages: Spanish, Chinese, Vietnamese, Korean, Tagalog (the five most common among US residents with limited English), plus Hindi, Arabic, Haitian Creole, Portuguese and French.
 
 > Going Home restates what the hospital wrote. It is not medical advice.
 > The sample documents are synthetic and every patient in them is fictional.
@@ -143,6 +143,7 @@ Cost is reported at Claude API list prices (the CLI reports it per call), so it 
 
 - `docs/report.html` and `docs/slides.html`: the project report and slide deck (self-contained; open by double-clicking).
 - `docs/results/`: the real evaluation logs behind every number in the report (accuracy, tokens, cost per run).
+- `docs/research_evidence.md`: the published evidence behind the impact thesis, with sources and confidence ratings.
 - `scripts/record_demo.py` recorded the demo video from a real run; `scripts/build_docs.py` builds the report and slides from the logs.
 
 ## Project layout

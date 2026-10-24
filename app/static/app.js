@@ -16,7 +16,7 @@ const statusLabel = (s) => L(s === "stop" ? "stop_short" : s, STATUS_TEXT[s] || 
 // ------------------------------------------------------------ dates & times
 const parseISO = (iso) => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d); };
 const todayISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
-const LOCALES = { "Español": "es", "हिन्दी": "hi-IN", "中文": "zh-CN", "Tiếng": "vi", "Português": "pt", "Français": "fr", "Kreyòl": "fr-HT", "العربية": "ar" };
+const LOCALES = { "Español": "es", "हिन्दी": "hi-IN", "中文": "zh-CN", "Tiếng": "vi", "한국어": "ko", "Tagalog": "fil", "Português": "pt", "Français": "fr", "Kreyòl": "fr-HT", "العربية": "ar" };
 const fmtDate = (iso, opts) => parseISO(iso).toLocaleDateString(state.locale, opts);
 const fmtTime = (hhmm) => { let [h, m] = hhmm.split(":").map(Number); const ap = h < 12 ? "AM" : "PM"; h = h % 12 || 12; return `${h}:${String(m).padStart(2, "0")} ${ap}`; };
 
