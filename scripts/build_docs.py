@@ -450,14 +450,17 @@ def report() -> str:
 <p><b>A simulated reader study (AI personas, not people).</b> Before a real test, I had three AI personas (played by Claude Haiku) answer six questions a caregiver must get right, once from the original papers and once from the Going Home plan in their language, with Claude Sonnet grading against my answer key.</p>
 {sim_table()}
 <p>The scores tie overall, but the plan helped where it matters most: the daughter couldn't tell her father's evening medicines from the papers ("short words like BID and QHS that I don't understand") and could from the plan. An AI persona reads English well even when told not to, so this proxy understates the language benefit.</p>
-<p><b>What I haven't done yet: a real-user test.</b> Everything above comes from my own tests, published research and a simulated study. The strongest evidence would be a real caregiver using it, and that is my first next step. The 15-minute protocol (time and correct answers with and without the app) is in the repo.</p>
+<h3>What a real clinic told me</h3>
+<div class="glance"><p>I shared Going Home with a clinic on the Laos–China border. Most of its patients speak Chinese (many also speak Lao), and many of the clinic's doctors trained in China, so medicines, diagnoses and the way patients are treated are often handled in Chinese. That is why a plan in Chinese made sense there, and it's the same reason I built Mr. Chen's case around it.</p>
+<p>What they told me: before, discharged patients often had to go back to the nurses, and pay, to get help following their treatment, or they followed it from memory. Many couldn't recall the doctor's diagnosis accurately. Having the plan written out in their own language was very helpful. Their main request was a phone app they could install and use every day.</p></div>
+<p class="small">This is informal feedback from one clinic, not a measured study: no times or scores were recorded. A measured test (time and correct answers with and without the app) is the next step; the protocol is in the repo.</p>
 
 <h2>8. Limits and next steps</h2>
-<p><b>What doesn't work yet.</b> I've tested on five synthetic cases, one attack file and one photo; real papers vary more (scans, handwriting, long tables). Clock times are defaults the family has to adjust. It doesn't check doses or interactions, so an error in the papers is repeated faithfully. A plan takes one to two minutes, longer in scripts like Hindi. Live mode needs a Claude login, and the impact numbers above are estimates until a real pilot runs.</p>
-<p><b>With another month, I would:</b> pilot it with discharge nurses, who would review the plan at the bedside before the family leaves; add read-back questions ("what do you stop?") and flag wrong answers to the care team; add a back-translation check; send SMS reminders and refill nudges; and evaluate it on de-identified real papers with a hospital partner.</p>
+<p><b>What doesn't work yet.</b> I've tested on five synthetic cases, one attack file and one photo; real papers vary more (scans, handwriting, long tables). Clock times are defaults the family has to adjust. It doesn't check doses or interactions, so an error in the papers is repeated faithfully. A plan takes one to two minutes, longer in scripts like Hindi. Live mode needs a Claude login and runs on a computer, not a phone. The user evidence so far is informal feedback from one clinic, and the impact numbers above are estimates until a measured pilot runs.</p>
+<p><b>With another month, I would:</b> build the phone app the clinic asked for, so patients can install it and check their plan every day; run a measured test at that clinic; pilot it with discharge nurses, who would review the plan at the bedside before the family leaves; add read-back questions ("what do you stop?") and flag wrong answers to the care team; add a back-translation check; send SMS reminders and refill nudges; and evaluate it on de-identified real papers with a hospital partner.</p>
 
 <h3>How I used AI, and other disclosures</h3>
-<p class="small">I built Going Home with Claude Code as my coding assistant, and used it to help research and draft this report and the slides, as the assignment allows. I checked every number against the run logs or the cited source. All patients and documents are synthetic. The demo video is a screen recording of real runs on my computer: waits are sped up and labeled, and the narration is a synthetic voice (Kokoro, an open-source text-to-speech model). The simulated reader study uses AI personas and is labeled as such throughout.</p>
+<p class="small">I built Going Home with Claude Code as my coding assistant, and used it to help research and draft this report and the slides, as the assignment allows. I checked every number against the run logs or the cited source. All patients and documents are synthetic. The demo video is a screen recording of real runs on my computer: waits are sped up and labeled, and the narration is a synthetic voice (Kokoro, an open-source text-to-speech model). The simulated reader study uses AI personas and is labeled as such throughout. The clinic feedback in section 7 is informal and reported as the clinic described it.</p>
 
 <h2>References</h2>
 {references()}
@@ -668,27 +671,27 @@ def slides() -> str:
 
 <!-- 10 -->
 <section>
-<p class="kicker">What I learned, and what's next</p>
-<h2>Verification mattered more than generation</h2>
+<p class="kicker">Real-world feedback, lessons, and what's next</p>
+<h2>A clinic on the Laos–China border found it helpful, and asked for a phone app</h2>
 <div class="g2">
 <div>
-<p><b>Three lessons from real runs</b></p>
+<p class="note">Most of the clinic's patients speak Chinese, and many of its doctors trained in China, so medicines and diagnoses are often in Chinese. Before, discharged patients went back to the nurses, and paid, to follow their treatment, or relied on memory, and often couldn't recall their diagnosis. A written plan in their language was very helpful. <span style="display:block;margin-top:5px;font-size:.78em;color:#486581">Informal feedback from one clinic; no measured test yet.</span></p>
+<p style="margin-top:.5em"><b>Lesson from building it</b></p>
 <ul>
 <li>My worst bug was a safety filter that deleted "Aspirin: STOP. <i>You are now</i> on apixaban". Safety checks need their own tests.</li>
-<li>Giving the Checker real tools made it cheaper and more careful at the same time.</li>
-<li>The cheaper model's mistakes were caught by code, which taught me to trust checks over prompts.</li>
 </ul>
-<p style="margin-top:.6em"><b>Honest limits:</b> 5 synthetic cases, 1 attack file and 1 photo; no real-user test yet; the impact numbers are estimates; live mode needs a Claude login (demo mode replays real recorded runs).</p>
+<p style="margin-top:.6em"><b>Honest limits:</b> 5 synthetic cases, 1 attack file and 1 photo; one clinic's informal feedback, no measured test yet; the impact numbers are estimates; live mode needs a Claude login.</p>
 </div>
 <div>
 <p><b>With another month</b></p>
 <ul>
+<li>The phone app the clinic asked for, to install and use daily</li>
+<li>A measured test at that clinic: time and correct answers with and without the app</li>
 <li>A pilot with discharge nurses, who review the plan at the bedside</li>
-<li>A real caregiver test: time and correct answers with and without the app</li>
 <li>Read-back questions ("what do you stop?") flagged to the care team</li>
 <li>A back-translation check and SMS reminders</li>
 </ul>
-<p class="tag" style="margin-top:1em">Going Home doesn't replace the care team. It makes sure the family leaves with the plan they were given.</p>
+
 </div>
 </div>
 <p class="src">Built with Claude Code as my coding assistant. Patients are synthetic; the video narration is a synthetic voice. Sources for every number are in the report and docs/research_evidence.md.</p>

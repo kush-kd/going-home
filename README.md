@@ -179,7 +179,8 @@ The test dataset is the six PDFs in `data/samples/` (about 40 KB in total): hear
 - Built with Claude Code as a coding assistant; Claude also helped research and draft the report and slides. Every number was checked against the run logs (`docs/results/`) or the cited source (`docs/research_evidence.md`).
 - All patients and discharge documents are synthetic.
 - The demo video is a screen recording of real runs on the author's computer. Agent waiting time is sped up and labeled, and the narration is a synthetic voice (Kokoro, open source).
-- The simulated reader study uses AI personas and is labeled as such. No real-user test has been run yet.
+- The simulated reader study uses AI personas and is labeled as such.
+- Real-world feedback: a clinic on the Laos–China border, where most patients speak Chinese and many doctors trained in China, tried Going Home and found the written plan in their language very helpful. Their main request was a phone app. This is informal feedback, not a measured test.
 
 ## Limits
 
