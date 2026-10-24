@@ -1,0 +1,269 @@
+{
+ "_about": "Hand-written answer key for the four synthetic samples. 'match' is a lowercase substring of the medicine name. 'times_per_day' null means not checked. Items marked optional are not counted if missing.",
+ "01_heart_failure_ramesh_mehta.pdf": {
+  "medications": [
+   {
+    "match": "furosemide",
+    "status": "new",
+    "schedule_kind": "fixed",
+    "times_per_day": 1,
+    "strength": "40"
+   },
+   {
+    "match": "spironolactone",
+    "status": "new",
+    "schedule_kind": "fixed",
+    "times_per_day": 1,
+    "strength": "25",
+    "dose": "12.5"
+   },
+   {
+    "match": "metoprolol",
+    "status": "changed",
+    "schedule_kind": "fixed",
+    "times_per_day": 1,
+    "strength": "25"
+   },
+   {
+    "match": "lisinopril",
+    "status": "continue",
+    "schedule_kind": "fixed",
+    "times_per_day": 1,
+    "strength": "5"
+   },
+   {
+    "match": "atorvastatin",
+    "status": "continue",
+    "schedule_kind": "fixed",
+    "times_per_day": 1,
+    "strength": "40"
+   },
+   {
+    "match": "amlodipine",
+    "status": "stop"
+   },
+   {
+    "match": "ibuprofen",
+    "status": "stop"
+   }
+  ],
+  "warnings": 2,
+  "appointments": 3
+ },
+ "02_pneumonia_diabetes_maria_garcia.pdf": {
+  "medications": [
+   {
+    "match": "amoxicillin",
+    "status": "new",
+    "schedule_kind": "fixed",
+    "times_per_day": 2,
+    "strength": "875",
+    "duration_days": 5,
+    "end_date": "2026-10-21"
+   },
+   {
+    "match": "glargine",
+    "status": "new",
+    "schedule_kind": "fixed",
+    "times_per_day": 1,
+    "dose": "18"
+   },
+   {
+    "match": "acetaminophen",
+    "status": "new",
+    "schedule_kind": "as_needed",
+    "strength": "500"
+   },
+   {
+    "match": "benzonatate",
+    "status": "new",
+    "schedule_kind": "as_needed",
+    "strength": "100"
+   },
+   {
+    "match": "metformin",
+    "status": "continue",
+    "schedule_kind": "fixed",
+    "times_per_day": 2,
+    "strength": "1000"
+   },
+   {
+    "match": "glucose",
+    "optional": true
+   }
+  ],
+  "warnings": 2,
+  "appointments": 3
+ },
+ "03_hip_replacement_dorothy_thompson.pdf": {
+  "medications": [
+   {
+    "match": "apixaban",
+    "status": "new",
+    "schedule_kind": "fixed",
+    "times_per_day": 2,
+    "strength": "2.5",
+    "duration_days": 35,
+    "end_date": "2026-11-20"
+   },
+   {
+    "match": "acetaminophen",
+    "status": "new",
+    "schedule_kind": "fixed",
+    "times_per_day": 3,
+    "strength": "500"
+   },
+   {
+    "match": "oxycodone",
+    "status": "new",
+    "schedule_kind": "as_needed",
+    "strength": "5"
+   },
+   {
+    "match": "docusate",
+    "status": "new",
+    "schedule_kind": "fixed",
+    "times_per_day": 2,
+    "strength": "100"
+   },
+   {
+    "match": "ondansetron",
+    "status": "new",
+    "schedule_kind": "as_needed",
+    "strength": "4"
+   },
+   {
+    "match": "levothyroxine",
+    "status": "continue",
+    "schedule_kind": "fixed",
+    "times_per_day": 1,
+    "strength": "75"
+   },
+   {
+    "match": "aspirin",
+    "status": "stop"
+   },
+   {
+    "match": "vitamin d",
+    "schedule_kind": "unclear"
+   },
+   {
+    "match": "home medications",
+    "optional": true
+   }
+  ],
+  "warnings": 2,
+  "appointments": 2,
+  "min_unclear": 2
+ },
+ "04_copd_steroid_taper_joseph_kowalski.pdf": {
+  "medications": [
+   {
+    "match": "prednisone",
+    "status": "new",
+    "schedule_kind": "taper",
+    "strength": "10",
+    "taper_steps": 4
+   },
+   {
+    "match": "azithromycin",
+    "status": "new",
+    "schedule_kind": "fixed",
+    "times_per_day": 1,
+    "strength": "250",
+    "end_date": "2026-10-19"
+   },
+   {
+    "match": "tiotropium",
+    "status": "new",
+    "schedule_kind": "fixed",
+    "times_per_day": 1,
+    "strength": "2.5"
+   },
+   {
+    "match": "nicotine",
+    "status": "new",
+    "schedule_kind": "fixed",
+    "times_per_day": 1,
+    "strength": "14"
+   },
+   {
+    "match": "fluticasone",
+    "status": "changed",
+    "schedule_kind": "fixed",
+    "times_per_day": 2,
+    "strength": "250"
+   },
+   {
+    "match": "albuterol",
+    "status": "continue",
+    "schedule_kind": "as_needed",
+    "strength": "90"
+   },
+   {
+    "match": "omeprazole",
+    "status": "continue",
+    "schedule_kind": "fixed",
+    "times_per_day": 1,
+    "strength": "20"
+   }
+  ],
+  "warnings": 2,
+  "appointments": 3
+ },
+ "05_stroke_afib_chen_guoliang.pdf": {
+  "medications": [
+   {
+    "match": "apixaban",
+    "status": "new",
+    "schedule_kind": "fixed",
+    "times_per_day": 2,
+    "strength": "5"
+   },
+   {
+    "match": "metoprolol",
+    "status": "new",
+    "schedule_kind": "fixed",
+    "times_per_day": 2,
+    "strength": "25"
+   },
+   {
+    "match": "atorvastatin",
+    "status": "changed",
+    "schedule_kind": "fixed",
+    "times_per_day": 1,
+    "strength": "80"
+   },
+   {
+    "match": "metformin",
+    "status": "changed",
+    "schedule_kind": "fixed",
+    "times_per_day": 2,
+    "strength": "500"
+   },
+   {
+    "match": "amlodipine",
+    "status": "continue",
+    "schedule_kind": "fixed",
+    "times_per_day": 1,
+    "strength": "5"
+   },
+   {
+    "match": "acetaminophen",
+    "status": "continue",
+    "schedule_kind": "as_needed",
+    "strength": "500"
+   },
+   {
+    "match": "aspirin",
+    "status": "stop"
+   },
+   {
+    "match": "ginkgo",
+    "status": "stop"
+   }
+  ],
+  "warnings": 2,
+  "appointments": 5
+ }
+}

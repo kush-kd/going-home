@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+logs/*
+!logs/.gitkeep
+.DS_Store
+docs/shots/
+docs/video_raw/
+*.mp4

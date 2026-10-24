@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Going Home: a plan for the first weeks after the hospital</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f766e'/%3E%3Cpath d='M14 31 32 16l18 15v17a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2z' fill='%23fff'/%3E%3Cpath d='M32 45s-9-5.5-9-11.2A4.8 4.8 0 0 1 32 31a4.8 4.8 0 0 1 9 2.8C41 39.5 32 45 32 45z' fill='%230f766e'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Going Home, start over">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0f766e"/><path d="M14 31 32 16l18 15v17a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2z" fill="#fff"/><path d="M32 45s-9-5.5-9-11.2A4.8 4.8 0 0 1 32 31a4.8 4.8 0 0 1 9 2.8C41 39.5 32 45 32 45z" fill="#0f766e"/></svg>
+      <span>Going Home</span>
+    </a>
+    <span id="provider" class="pill" title="Which AI backend is running">Checking AI…</span>
+  </header>
+
+  <main>
+    <!-- Step 1: upload -->
+    <section id="start">
+      <div class="hero">
+        <h1>Bring someone home with a clear plan.</h1>
+        <p class="lead">Upload the hospital discharge papers. In about two minutes you get a medicine timetable, phone reminders, a warning-signs card and questions for the doctor, in the language your family reads best.</p>
+      </div>
+
+      <div class="start-grid">
+        <form id="upload-form" class="card upload-card">
+          <h2>1. Add the discharge papers</h2>
+          <label id="dropzone" class="dropzone" tabindex="0">
+            <input id="file" type="file" accept=".pdf,.png,.jpg,.jpeg,.txt" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <strong id="drop-title">Drop a PDF or photo here</strong>
+            <span id="drop-sub">or click to choose a file (PDF, JPG, PNG; up to 10 MB)</span>
+          </label>
+
+          <h2>2. Choose a language</h2>
+          <select id="language" aria-label="Language for the plan"></select>
+
+          <button id="go" class="btn primary big" type="submit" disabled>Make our plan</button>
+          <p class="fine">Your papers are read once to build the plan and are not stored. Names are not saved.</p>
+        </form>
+
+        <div class="card samples-card">
+          <h2>Or try a sample</h2>
+          <p class="muted">Synthetic discharge papers for fictional patients.</p>
+          <div id="samples" class="samples"></div>
+        </div>
+      </div>
+
+      <div class="how">
+        <div><span class="num">1</span><h3>Reads the papers</h3><p>An AI Reader pulls out every medicine, dose, visit and warning sign, with the exact words it found them in.</p></div>
+        <div><span class="num">2</span><h3>Double-checks them</h3><p>A program checks every quote and number against your papers, and a second AI looks for anything missed.</p></div>
+        <div><span class="num">3</span><h3>Makes it easy</h3><p>You get a day-by-day timetable, reminders for your phone, and plain words in your language.</p></div>
+      </div>
+    </section>
+
+    <!-- Step 2: progress -->
+    <section id="progress" hidden>
+      <div class="card progress-card">
+        <div class="progress-head">
+          <div class="spinner" aria-hidden="true"></div>
+          <div>
+            <h2 id="progress-title">Making your plan…</h2>
+            <p class="muted" id="progress-sub">Four AI agents and three safety checks are working through the papers. This usually takes 1 to 3 minutes.</p>
+          </div>
+        </div>
+        <ol id="steps" class="steps"></ol>
+        <div id="run-error" class="alert danger" hidden></div>
+        <button id="retry" class="btn" hidden>Start over</button>
+      </div>
+    </section>
+
+    <!-- Step 3: the plan -->
+    <section id="result" hidden>
+      <div id="notices"></div>
+
+      <div class="plan-head">
+        <div>
+          <p class="eyebrow" id="plan-eyebrow"></p>
+          <h1 id="plan-title">Your plan for going home</h1>
+        </div>
+        <div class="actions">
+          <a id="ics" class="btn primary" href="#" download><span aria-hidden="true">📅</span> <span data-label="calendar">Add to my calendar</span></a>
+          <button id="print" class="btn"><span aria-hidden="true">🖨️</span> <span data-label="print_chart">Print weekly chart</span></button>
+          <button id="restart" class="btn ghost"><span data-label="new_papers">New papers</span></button>
+        </div>
+      </div>
+
+      <div id="summary" class="card summary" hidden></div>
+
+      <nav class="tabs" role="tablist" id="tabs">
+        <button role="tab" data-tab="timetable" aria-selected="true"><span data-label="timetable">Medicine timetable</span></button>
+        <button role="tab" data-tab="medicines"><span data-label="medicines">Medicines</span></button>
+        <button role="tab" data-tab="warnings"><span data-label="warnings">Warning signs</span></button>
+        <button role="tab" data-tab="appointments"><span data-label="appointments">Appointments</span></button>
+        <button role="tab" data-tab="questions"><span data-label="questions">Questions for the doctor</span> <span id="q-count" class="count"></span></button>
+        <button role="tab" data-tab="instructions"><span data-label="instructions">Diet and activity</span></button>
+        <button role="tab" data-tab="trace">How this plan was made</button>
+      </nav>
+
+      <div class="panel" data-panel="timetable" role="tabpanel"></div>
+      <div class="panel" data-panel="medicines" role="tabpanel" hidden></div>
+      <div class="panel" data-panel="warnings" role="tabpanel" hidden></div>
+      <div class="panel" data-panel="appointments" role="tabpanel" hidden></div>
+      <div class="panel" data-panel="questions" role="tabpanel" hidden></div>
+      <div class="panel" data-panel="instructions" role="tabpanel" hidden></div>
+      <div class="panel" data-panel="trace" role="tabpanel" hidden></div>
+
+      <!-- Only shown when printing -->
+      <div id="print-area" class="print-only"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p><strong>Going Home restates what your hospital wrote. It is not medical advice.</strong> If anything here looks different from your papers or what your care team told you, follow your care team and call them. In an emergency, call 911.</p>
+    <p class="muted">Class project. Sample documents are synthetic and every patient in them is fictional.</p>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>

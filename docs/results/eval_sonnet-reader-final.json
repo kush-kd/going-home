@@ -1,0 +1,156 @@
+{
+ "summary": {
+  "label": "sonnet-reader-final",
+  "models": {
+   "transcriber": "sonnet",
+   "reader": "sonnet",
+   "checker": "sonnet",
+   "explainer": "sonnet"
+  },
+  "runs": 5,
+  "errors": 0,
+  "med_recall": 1.0,
+  "field_accuracy": 1.0,
+  "verified_rate": 1.0,
+  "avg_tokens": 34609,
+  "avg_cost_usd": 0.1721,
+  "avg_elapsed_s": 118.1
+ },
+ "rows": [
+  {
+   "sample": "01_heart_failure_ramesh_mehta.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 8,
+    "cache_write_tokens": 13839,
+    "cache_read_tokens": 12921,
+    "output_tokens": 11562
+   },
+   "total_tokens": 38330,
+   "cost_usd": 0.1736,
+   "elapsed_s": 190.7,
+   "models": [
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "02_pneumonia_diabetes_maria_garcia.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 8,
+    "cache_write_tokens": 13435,
+    "cache_read_tokens": 13902,
+    "output_tokens": 12669
+   },
+   "total_tokens": 40014,
+   "cost_usd": 0.1832,
+   "elapsed_s": 85.7,
+   "models": [
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "03_hip_replacement_dorothy_thompson.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 6,
+    "cache_write_tokens": 11778,
+    "cache_read_tokens": 7413,
+    "output_tokens": 10735
+   },
+   "total_tokens": 29932,
+   "cost_usd": 0.156,
+   "elapsed_s": 132.6,
+   "models": [
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "04_copd_steroid_taper_joseph_kowalski.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 6,
+    "cache_write_tokens": 12590,
+    "cache_read_tokens": 7413,
+    "output_tokens": 11208
+   },
+   "total_tokens": 31217,
+   "cost_usd": 0.1639,
+   "elapsed_s": 85.8,
+   "models": [
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "05_stroke_afib_chen_guoliang.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 6,
+    "cache_write_tokens": 13185,
+    "cache_read_tokens": 7413,
+    "output_tokens": 12950
+   },
+   "total_tokens": 33554,
+   "cost_usd": 0.1837,
+   "elapsed_s": 95.9,
+   "models": [
+    "claude-sonnet-5"
+   ]
+  }
+ ]
+}

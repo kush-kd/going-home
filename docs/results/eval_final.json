@@ -1,0 +1,167 @@
+{
+ "summary": {
+  "label": "final",
+  "models": {
+   "transcriber": "sonnet",
+   "reader": "opus",
+   "checker": "sonnet",
+   "explainer": "sonnet"
+  },
+  "runs": 5,
+  "errors": 0,
+  "med_recall": 1.0,
+  "field_accuracy": 1.0,
+  "verified_rate": 1.0,
+  "avg_tokens": 39847,
+  "avg_cost_usd": 0.2497,
+  "avg_elapsed_s": 104.1
+ },
+ "rows": [
+  {
+   "sample": "01_heart_failure_ramesh_mehta.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [
+    "naproxen (Aleve)"
+   ],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 8,
+    "cache_write_tokens": 17565,
+    "cache_read_tokens": 12884,
+    "output_tokens": 9842
+   },
+   "total_tokens": 40299,
+   "cost_usd": 0.2334,
+   "elapsed_s": 66.5,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "02_pneumonia_diabetes_maria_garcia.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 6,
+    "cache_write_tokens": 10996,
+    "cache_read_tokens": 7438,
+    "output_tokens": 9345
+   },
+   "total_tokens": 27785,
+   "cost_usd": 0.1854,
+   "elapsed_s": 58.6,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "03_hip_replacement_dorothy_thompson.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 6,
+    "cache_write_tokens": 12142,
+    "cache_read_tokens": 7438,
+    "output_tokens": 11586
+   },
+   "total_tokens": 31172,
+   "cost_usd": 0.223,
+   "elapsed_s": 83.2,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "04_copd_steroid_taper_joseph_kowalski.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 10,
+    "cache_write_tokens": 12477,
+    "cache_read_tokens": 20924,
+    "output_tokens": 9874
+   },
+   "total_tokens": 43285,
+   "cost_usd": 0.2108,
+   "elapsed_s": 154.6,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "05_stroke_afib_chen_guoliang.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": true,
+   "grounding_flags": {},
+   "checker_issues": [
+    "[medium] The document explains the metformin dose was lowered from 1,000 mg because of kidney function, but the plan's special_instructions field for metformin (m4) is empty and the source_quote omits this sentence, unlike the atorvastatin entry which correctly preserves its 'Dose increased from 20 mg' note. The family loses the reason/context for this dose change.",
+    "[medium] The instruction to 'Bring the log to your visits' is not captured as its own instruction. The plan only attaches a 'bring blood pressure log' note to the cardiology appointment (a3), but the document says to bring it to visits generally (including neurology), so this reminder could be missed for other appointments.",
+    "[low] The plan's source_quote and fields for the blood test appointment omit 'No appointment needed,' which is useful information telling the family they can walk in during the window without scheduling."
+   ],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 10,
+    "cache_write_tokens": 24709,
+    "cache_read_tokens": 14143,
+    "output_tokens": 17832
+   },
+   "total_tokens": 56694,
+   "cost_usd": 0.3958,
+   "elapsed_s": 157.6,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5"
+   ]
+  }
+ ]
+}

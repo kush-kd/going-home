@@ -1,0 +1,123 @@
+{
+ "summary": {
+  "label": "default",
+  "models": {
+   "transcriber": "sonnet",
+   "reader": "opus",
+   "checker": "sonnet",
+   "explainer": "sonnet"
+  },
+  "runs": 4,
+  "errors": 0,
+  "med_recall": 1.0,
+  "field_accuracy": 1.0,
+  "verified_rate": 1.0,
+  "avg_tokens": 45060,
+  "avg_cost_usd": 0.3187,
+  "avg_elapsed_s": 124.3
+ },
+ "rows": [
+  {
+   "sample": "01_heart_failure_ramesh_mehta.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [
+    "naproxen (Aleve)"
+   ],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 6,
+    "cache_write_tokens": 17963,
+    "cache_read_tokens": 2878,
+    "output_tokens": 10513
+   },
+   "total_tokens": 31360,
+   "cost_usd": 0.2554,
+   "elapsed_s": 74.0,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "02_pneumonia_diabetes_maria_garcia.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "explainer_rejections": 4,
+   "tokens": {
+    "input_tokens": 8,
+    "cache_write_tokens": 14032,
+    "cache_read_tokens": 13680,
+    "output_tokens": 11429
+   },
+   "total_tokens": 39149,
+   "cost_usd": 0.229,
+   "elapsed_s": 73.0,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "03_hip_replacement_dorothy_thompson.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": true,
+   "explainer_rejections": 3,
+   "tokens": {
+    "input_tokens": 10,
+    "cache_write_tokens": 23739,
+    "cache_read_tokens": 12902,
+    "output_tokens": 17465
+   },
+   "total_tokens": 54116,
+   "cost_usd": 0.3893,
+   "elapsed_s": 183.4,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "04_copd_steroid_taper_joseph_kowalski.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": true,
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 10,
+    "cache_write_tokens": 25016,
+    "cache_read_tokens": 12902,
+    "output_tokens": 17686
+   },
+   "total_tokens": 55614,
+   "cost_usd": 0.4012,
+   "elapsed_s": 166.7,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5"
+   ]
+  }
+ ]
+}

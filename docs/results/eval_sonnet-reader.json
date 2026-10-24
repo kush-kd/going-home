@@ -1,0 +1,155 @@
+{
+ "summary": {
+  "label": "sonnet-reader",
+  "models": {
+   "transcriber": "sonnet",
+   "reader": "sonnet",
+   "checker": "sonnet",
+   "explainer": "sonnet"
+  },
+  "runs": 4,
+  "errors": 0,
+  "med_recall": 1.0,
+  "field_accuracy": 1.0,
+  "verified_rate": 1.0,
+  "avg_tokens": 41558,
+  "avg_cost_usd": 0.2263,
+  "avg_elapsed_s": 118.0
+ },
+ "rows": [
+  {
+   "sample": "01_heart_failure_ramesh_mehta.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 6,
+    "cache_write_tokens": 16977,
+    "cache_read_tokens": 2878,
+    "output_tokens": 10600
+   },
+   "total_tokens": 30461,
+   "cost_usd": 0.1745,
+   "elapsed_s": 74.3,
+   "models": [
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "02_pneumonia_diabetes_maria_garcia.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [
+    "[low] Document specifies metformin should be taken with breakfast and dinner specifically, but the plan's 'times_of_day' field is left empty and only 'meal_relation: with_food' is recorded, losing the specific breakfast/dinner anchor that also lines up with the blood sugar check times."
+   ],
+   "checker_remaining": [
+    "[low] Document specifies metformin should be taken with breakfast and dinner specifically, but the plan's 'times_of_day' field is left empty and only 'meal_relation: with_food' is recorded, losing the specific breakfast/dinner anchor that also lines up with the blood sugar check times."
+   ],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 6,
+    "cache_write_tokens": 10952,
+    "cache_read_tokens": 7207,
+    "output_tokens": 12686
+   },
+   "total_tokens": 30851,
+   "cost_usd": 0.1721,
+   "elapsed_s": 83.3,
+   "models": [
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "03_hip_replacement_dorothy_thompson.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": true,
+   "grounding_flags": {
+    "a2": [
+     "purpose 'set up home physical therapy visits' was not found in the document (60%)"
+    ]
+   },
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 8,
+    "cache_write_tokens": 18814,
+    "cache_read_tokens": 10485,
+    "output_tokens": 17715
+   },
+   "total_tokens": 47022,
+   "cost_usd": 0.2545,
+   "elapsed_s": 141.2,
+   "models": [
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "04_copd_steroid_taper_joseph_kowalski.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": true,
+   "grounding_flags": {
+    "m1": [
+     "8 days is not in the document text"
+    ],
+    "m4": [
+     "instruction 'Apply to clean, hairless skin' was not found in the document (64%)"
+    ],
+    "a1": [
+     "purpose 'Pulmonology follow-up' was not found in the document (48%)"
+    ],
+    "a2": [
+     "purpose 'Pulmonary rehabilitation (referral sent)' was not found in the document (76%)"
+    ],
+    "a3": [
+     "purpose 'Primary care follow-up' was not found in the document (53%)"
+    ]
+   },
+   "checker_issues": [
+    "[medium] The document specifies a dosing interval range of 4 to 6 hours, but the plan's 'interval_hours' field only records 4, losing the upper bound of the range. This could lead a caregiver to think the medicine should be given exactly every 4 hours rather than anywhere in a 4-6 hour window."
+   ],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 10,
+    "cache_write_tokens": 24844,
+    "cache_read_tokens": 12852,
+    "output_tokens": 20190
+   },
+   "total_tokens": 57896,
+   "cost_usd": 0.3039,
+   "elapsed_s": 173.4,
+   "models": [
+    "claude-sonnet-5"
+   ]
+  }
+ ]
+}
