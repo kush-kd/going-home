@@ -457,7 +457,8 @@ def report() -> str:
 
 <h2>8. Limits and next steps</h2>
 <p><b>What doesn't work yet.</b> I've tested on five synthetic cases, one attack file and one photo; real papers vary more (scans, handwriting, long tables). Clock times are defaults the family has to adjust. It doesn't check doses or interactions, so an error in the papers is repeated faithfully. A plan takes one to two minutes, longer in scripts like Hindi. Live mode needs a Claude login and runs on a computer, not a phone. The user evidence so far is informal feedback from one clinic, and the impact numbers above are estimates until a measured pilot runs.</p>
-<p><b>With another month, I would:</b> build the phone app the clinic asked for, so patients can install it and check their plan every day; run a measured test at that clinic; pilot it with discharge nurses, who would review the plan at the bedside before the family leaves; add read-back questions ("what do you stop?") and flag wrong answers to the care team; add a back-translation check; send SMS reminders and refill nudges; and evaluate it on de-identified real papers with a hospital partner.</p>
+<p><b>Next: more feedback before more features.</b> This is a first draft. Over the next month I want to collect more feedback, from the clinic that tried it and from other clinics, nurses and families, so I can see which improvements matter most. A measured test (time and correct answers with and without the app) is the first step. The ideas on my list so far: the phone app the clinic asked for, read-back questions ("what do you stop?") flagged to the care team, a back-translation check, SMS reminders, and an evaluation on de-identified real papers with a hospital partner.</p>
+<p><b>Future scope.</b> Later on, I hope to launch Going Home as an application, and as a business built around its mission. I'd like to work with foundations that support health care in developing countries, and in developed ones, so that families everywhere leave the hospital with a plan they can follow. The goal is the same one this project started with: preventing the harm, and the deaths, that happen when a care plan doesn't survive the trip home.</p>
 
 <h3>How I used AI, and other disclosures</h3>
 <p class="small">I built Going Home with Claude Code as my coding assistant, and used it to help research and draft this report and the slides, as the assignment allows. I checked every number against the run logs or the cited source. All patients and documents are synthetic. The demo video is a screen recording of real runs on my computer: waits are sped up and labeled, and the narration is a synthetic voice (Kokoro, an open-source text-to-speech model). The simulated reader study uses AI personas and is labeled as such throughout. The clinic feedback in section 7 is informal and reported as the clinic described it.</p>
@@ -672,7 +673,7 @@ def slides() -> str:
 <!-- 10 -->
 <section>
 <p class="kicker">Real-world feedback, lessons, and what's next</p>
-<h2>A clinic on the Laos–China border found it helpful, and asked for a phone app</h2>
+<h2>A clinic on the Laos–China border found it helpful; next, more feedback, then a launch with foundations</h2>
 <div class="g2">
 <div>
 <p class="note">Most of the clinic's patients speak Chinese, and many of its doctors trained in China, so medicines and diagnoses are often in Chinese. Before, discharged patients went back to the nurses, and paid, to follow their treatment, or relied on memory, and often couldn't recall their diagnosis. A written plan in their language was very helpful. <span style="display:block;margin-top:5px;font-size:.78em;color:#486581">Informal feedback from one clinic; no measured test yet.</span></p>
@@ -683,13 +684,16 @@ def slides() -> str:
 <p style="margin-top:.6em"><b>Honest limits:</b> 5 synthetic cases, 1 attack file and 1 photo; one clinic's informal feedback, no measured test yet; the impact numbers are estimates; live mode needs a Claude login.</p>
 </div>
 <div>
-<p><b>With another month</b></p>
+<p><b>Next: more feedback, then improve the first draft</b></p>
 <ul>
-<li>The phone app the clinic asked for, to install and use daily</li>
-<li>A measured test at that clinic: time and correct answers with and without the app</li>
-<li>A pilot with discharge nurses, who review the plan at the bedside</li>
-<li>Read-back questions ("what do you stop?") flagged to the care team</li>
-<li>A back-translation check and SMS reminders</li>
+<li>Collect feedback from the clinic and from other clinics, nurses and families</li>
+<li>Run a measured test: time and correct answers with and without the app</li>
+<li>Use it to decide what to build next (the phone app, read-back questions, a translation check)</li>
+</ul>
+<p style="margin-top:.5em"><b>Future scope</b></p>
+<ul>
+<li>Launch Going Home as an application and a mission-driven business</li>
+<li>Partner with foundations that support health care in developing and developed countries, to save lives</li>
 </ul>
 
 </div>

@@ -174,6 +174,10 @@ run.py            start the server
 
 The test dataset is the six PDFs in `data/samples/` (about 40 KB in total): heart failure, pneumonia with diabetes (Spanish reader), hip replacement, a COPD steroid taper, a stroke warning with a new blood thinner (Chinese reader), and a prompt-injection safety test. There is no large dataset: real users upload their own papers. To regenerate the samples, run `python scripts/make_samples.py`.
 
+## Next steps and future scope
+
+This is a first draft. The next step is to collect more feedback, from the clinic that tried it and from other clinics, nurses and families, and to run a measured test, so the most useful improvements come first. Later, the goal is to launch Going Home as an application and a mission-driven business, working with foundations that support health care in developing and developed countries.
+
 ## Disclosures
 
 - Built with Claude Code as a coding assistant; Claude also helped research and draft the report and slides. Every number was checked against the run logs (`docs/results/`) or the cited source (`docs/research_evidence.md`).
