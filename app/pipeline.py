@@ -33,6 +33,8 @@ LABEL_KEYS = {
     "how_to_take": "How to take it", "print_chart": "Print weekly chart", "calendar": "Add to my calendar",
     "check_with_team": "Check with your care team", "max": "Daily limit", "weekly_chart": "Weekly medicine chart",
     "given": "Given", "done": "Done", "new_papers": "New papers",
+    "times_note": "Clock times are suggestions. Your papers say how often (for example, twice daily); Going Home spreads the doses across the day. Keep the spacing and move them to fit your day, or ask your pharmacist.",
+    "first_day_note": "On the day you leave the hospital, ask the nurse which of today's doses were already given, so none are doubled.",
 }
 
 
@@ -235,8 +237,10 @@ def _allowed_numbers_source(m: Medication, schedule: dict) -> str:
 
 
 def _validate_explanation(exp: Explanation, ex: Extraction, schedule: dict) -> tuple[dict, list[dict]]:
-    """Throw out any explained text that introduces a number not in the verified data."""
+    """Throw out any explained text that introduces a number not in the verified data, and anything the
+    papers did not say (a purpose, or extra tips)."""
     flags = []
+    trimmed: list[dict] = []
     cards = {c.id: c for c in exp.medications}
     out_meds = {}
     for m in ex.medications:
@@ -252,7 +256,13 @@ def _validate_explanation(exp: Explanation, ex: Extraction, schedule: dict) -> t
             flags.append({"id": m.id, "problem": f"explanation had numbers not in the document ({', '.join(sorted(bad))}); showing the doctor's words"})
             out_meds[m.id] = {"what_for": None, "how_to_take": m.source_quote, "tips": [], "fallback": True}
         else:
-            out_meds[m.id] = {"what_for": c.what_for, "how_to_take": c.how_to_take, "tips": c.tips, "fallback": False}
+            # The Explainer may only restate: a purpose only if the papers state one, and no more tips than the
+            # papers' own extra instructions. Anything beyond that is dropped by code, whatever the prompt said.
+            what_for = c.what_for if m.purpose else None
+            tips = c.tips[:len(m.special_instructions)]
+            if (c.what_for and not m.purpose) or len(c.tips) > len(tips):
+                trimmed.append({"id": m.id, "removed_purpose": bool(c.what_for and not m.purpose), "removed_tips": len(c.tips) - len(tips)})
+            out_meds[m.id] = {"what_for": what_for, "how_to_take": c.how_to_take, "tips": tips, "fallback": False}
 
     def simple(items, src_items, kind):
         src = {s.id: s for s in src_items}
@@ -295,6 +305,7 @@ def _validate_explanation(exp: Explanation, ex: Extraction, schedule: dict) -> t
         "appointments": simple(exp.appointments, ex.appointments, "appointment"),
         "questions": [q.model_dump() for q in exp.questions],
         "labels": labels,
+        "trimmed": trimmed,
     }, flags
 
 

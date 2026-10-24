@@ -70,7 +70,7 @@ async def checker(doc_text: str, plan: Extraction) -> LLMResult:
 
 
 async def explainer(plan_data: dict, language: str, label_keys: dict[str, str]) -> LLMResult:
-    # The Explainer never sees the raw document: only verified, structured data.
+    # The Explainer never sees the full document: only verified items and their verified source sentences.
     user = (
         f"Target language: {language}\n\n"
         "<plan>\n" + json.dumps(plan_data, ensure_ascii=False, indent=1) + "\n</plan>\n\n"

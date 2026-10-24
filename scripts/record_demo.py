@@ -185,7 +185,13 @@ def main() -> None:
             # 1. The problem
             d.cap("When someone leaves the hospital, the family goes home with a stack of discharge papers.", 4)
             d.cap("New medicines, changed doses, medicines to stop, visits and warning signs, in medical shorthand.", 4)
-            d.cap("<b>Going Home</b> turns those papers into a plan a family can actually follow.", 3.5)
+            d.cap("<b>Going Home</b> turns those papers into a plan a family can actually follow.", 3)
+            page.evaluate("document.querySelector('.scope').scrollIntoView({block: 'center', behavior: 'smooth'})")
+            d.sleep(1)
+            d.move_to(".scope-col.doesnt")
+            d.cap("It only restates the hospital's plan. It never diagnoses, changes a dose, adds a medicine or gives medical advice.", 5)
+            page.evaluate("window.scrollTo({top: 0, behavior: 'smooth'})")
+            d.sleep(0.8)
 
             # 2. The papers
             page.evaluate("([s, t]) => window.__modal(s, t)", [hf_png, "Synthetic discharge summary: stroke warning and new blood thinner (fictional patient)"])
@@ -207,11 +213,13 @@ def main() -> None:
             page.evaluate("window.scrollTo(0, 0)")
             d.sleep(0.5)
             d.shot("zh_top")
-            d.cap("✅ Every medicine, dose and phone number was matched word-for-word to the papers.", 4)
+            d.cap("✅ Every medicine was found in the papers, and every dose, date and phone number matches them exactly.", 4)
             d.tab("timetable")
             d.click(".days .day")      # discharge day
             d.sleep(0.5)
             d.shot("zh_timetable")
+            d.move_to(".tt-note")
+            d.cap("Clock times are suggestions. On discharge day it reminds the family to ask which doses were already given.", 4)
             d.cap("A day-by-day medicine timetable the family can tick off…", 2)
             d.click(".dose input")
             d.sleep(0.8)

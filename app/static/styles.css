@@ -96,6 +96,14 @@ select { width: 100%; font: inherit; padding: .6rem .7rem; border-radius: 10px; 
 .sample .btns { display: flex; gap: .4rem; flex-shrink: 0; }
 .sample .btn { padding: .4rem .7rem; font-size: .85rem; }
 .sample.safety { background: var(--amber-soft); border-color: #fedf89; }
+.scope { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin: 1.6rem 0 0; }
+.scope-col { border-radius: var(--radius); padding: 1rem 1.2rem; border: 1px solid var(--line); background: var(--card); }
+.scope-col h3 { font-size: 1rem; margin-bottom: .5rem; }
+.scope-col ul { margin: 0; padding-left: 1.1rem; font-size: .93rem; color: var(--ink-2); }
+.scope-col li { margin-bottom: .35rem; }
+.scope-col.does { border-left: 5px solid var(--teal); }
+.scope-col.doesnt { border-left: 5px solid var(--red); }
+.scope-col.doesnt h3 { color: var(--red); }
 .how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin: 2rem 0 1rem; }
 .how div { padding: .2rem .4rem; }
 .how .num { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--teal); color: #fff; font-weight: 700; margin-bottom: .4rem; }
@@ -145,6 +153,7 @@ select { width: 100%; font: inherit; padding: .6rem .7rem; border-radius: 10px; 
 .count:empty { display: none; }
 
 /* timetable */
+.tt-note { background: var(--blue-soft); border: 1px solid #bfdbfe; color: #1e3a8a; border-radius: 12px; padding: .6rem .9rem; font-size: .9rem; margin-bottom: .8rem; }
 .days { display: flex; gap: .4rem; overflow-x: auto; padding-bottom: .5rem; margin-bottom: .8rem; }
 .day {
   flex-shrink: 0; border: 1px solid var(--line); background: var(--card); border-radius: 12px; padding: .45rem .75rem; text-align: center; cursor: pointer; font: inherit; min-width: 66px;
@@ -256,7 +265,7 @@ table.trace td.num { text-align: right; font-variant-numeric: tabular-nums; }
 
 /* ---------- small screens ---------- */
 @media (max-width: 860px) {
-  .start-grid, .tt-grid, .warn-grid, .how { grid-template-columns: 1fr; }
+  .start-grid, .tt-grid, .warn-grid, .how, .scope { grid-template-columns: 1fr; }
   .trace-cards { grid-template-columns: 1fr 1fr; }
   .hero h1 { font-size: 1.8rem; }
   .slot { grid-template-columns: 1fr; gap: .4rem; }

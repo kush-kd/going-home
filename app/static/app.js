@@ -232,13 +232,16 @@ function renderNotices(r) {
   const unver = r.schedule.unscheduled.filter((u) => u.reason === "needs_check").length;
   const remaining = r.checker.remaining_issues.filter((i) => i.severity !== "low");
   if (unver || remaining.length) {
-    out.push(`<div class="alert warn"><span class="ico">⚠️</span><div><strong>${esc(L("check_with_team", "Check with your care team"))}:</strong> ${unver ? `${unver} medicine(s) could not be confirmed word-for-word against your papers, so they are not on the timetable.` : ""} ${remaining.length ? `The checker still has ${remaining.length} concern(s); see Questions for the doctor.` : ""}</div></div>`);
+    out.push(`<div class="alert warn"><span class="ico">⚠️</span><div><strong>${esc(L("check_with_team", "Check with your care team"))}:</strong> ${unver ? `${unver} medicine(s) could not be matched to your papers, so they are not on the timetable.` : ""} ${remaining.length ? `The checker still has ${remaining.length} concern(s); see Questions for the doctor.` : ""}</div></div>`);
+  }
+  if (d.source_kind === "photo" || d.source_kind === "scanned_pdf") {
+    out.push(`<div class="alert warn"><span class="ico">📷</span><div><strong>This plan was made from a photo or scan.</strong> Going Home checks the plan against what it read from the image, so a blurry digit could be misread. Compare each dose with the paper before you use it.</div></div>`);
   }
   if (r.explainer_flags.length) {
     out.push(`<div class="alert info"><span class="ico">🔢</span><div>${r.explainer_flags.length} explanation(s) contained a number that is not in your papers, so we show the doctor's exact words for those instead.</div></div>`);
   }
   if (!out.length) {
-    out.push(`<div class="alert ok"><span class="ico">✅</span><div><strong>Every medicine, dose and phone number on this plan was matched word-for-word to your discharge papers.</strong> Still, follow your care team if anything differs.</div></div>`);
+    out.push(`<div class="alert ok"><span class="ico">✅</span><div><strong>Every medicine on this plan was found in your discharge papers, and every dose, date and phone number matches them exactly.</strong> Going Home only restates your papers. Follow your care team if anything differs.</div></div>`);
   }
   $("#notices").innerHTML = out.join("");
 }
@@ -278,7 +281,11 @@ function renderTimetable(r) {
   const stop = s.stopped.map((id) => meds[id]).map((m) => `<li><strong>${esc(m.name)}</strong></li>`).join("");
   const check = s.unscheduled.map((u) => `<li><strong>${esc(meds[u.id].name)}</strong><br><span class="note">${u.reason === "needs_check" ? "Could not be confirmed against your papers" : "The papers do not give a clear schedule"}</span></li>`).join("");
 
-  panel.innerHTML = `<div class="days" role="group" aria-label="Choose a day">${dayButtons}</div>
+  const isFirst = state.day === s.days[0]?.date;
+  const timesNote = L("times_note", "Clock times are suggestions. Your papers say how often (for example, twice daily); Going Home spreads the doses across the day. Keep the spacing and move them to fit your day, or ask your pharmacist.");
+  const firstNote = L("first_day_note", "On the day you leave the hospital, ask the nurse which of today's doses were already given, so none are doubled.");
+  const note = `<div class="tt-note">🕗 ${esc(timesNote)}${isFirst ? ` <b>${esc(firstNote)}</b>` : ""}</div>`;
+  panel.innerHTML = `${note}<div class="days" role="group" aria-label="Choose a day">${dayButtons}</div>
     <div class="tt-grid">
       <div class="card">${slots}</div>
       <aside>
@@ -392,7 +399,7 @@ function renderTrace(run) {
       <div class="stat"><b>${m.total_tokens.toLocaleString()}</b><span>tokens used (all agents)</span></div>
       <div class="stat"><b>${m.cost_usd != null ? "$" + m.cost_usd.toFixed(3) : "–"}</b><span>cost at API list prices</span></div>
       <div class="stat"><b>${m.elapsed_s}s</b><span>time to make the plan</span></div>
-      <div class="stat"><b>${ok}/${verified.length}</b><span>items matched word-for-word</span></div>
+      <div class="stat"><b>${ok}/${verified.length}</b><span>items matched to the papers</span></div>
     </div>
     ${m.reading_grade_document != null ? `<div class="alert info"><span class="ico">📖</span><div>${m.reading_grade_plan != null
       ? `Reading level went from <strong>grade ${m.reading_grade_document}</strong> (hospital papers) to <strong>grade ${m.reading_grade_plan}</strong> (this plan), by the Flesch-Kincaid formula.`

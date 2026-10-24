@@ -73,7 +73,7 @@ The status pill in the top-right corner of the app says whether the subscription
 pytest -q
 ```
 
-30 tests cover the scheduler, the calendar, and every safety defense: hidden-text removal, prompt-injection removal (without removing real instructions such as "STOP aspirin. You are now on apixaban"), wrong doses caught, invented quotes caught, the capped repair loop, the Explainer number check, and the token, call and daily budgets. A fake model stands in for the AI, so the tests are free and repeatable.
+31 tests cover the scheduler, the calendar, and every safety defense: hidden-text removal, prompt-injection removal (without removing real instructions such as "STOP aspirin. You are now on apixaban"), wrong doses caught, invented quotes caught, the capped repair loop, the Explainer number check, and the token, call and daily budgets. A fake model stands in for the AI, so the tests are free and repeatable.
 
 ---
 
@@ -96,12 +96,12 @@ flowchart LR
     N --> P[Plan + calendar + print chart]
 ```
 
-| Agent | Job | Sees the raw document? |
+| Agent | Job | Sees the full document? |
 |---|---|---|
 | **Transcriber** (photos only) | Copies every line of a photo or scan into text | The image only |
 | **Reader** | Extracts medicines, doses, schedules, tapers, appointments, warning signs and unclear items into a strict schema, each with an exact `source_quote` | Yes, wrapped in `<discharge_document>` tags as untrusted data |
 | **Checker** | Independently compares the plan with the document (missed medicines, wrong doses, a stopped medicine shown as active, missing warnings), **using real tools** from an MCP server (`app/mcp_tools.py`): `list_medication_lines`, `search_document`, `check_quote`, `verify_item` | Yes |
-| **Explainer** | Rewrites the verified plan in plain language at about a 5th-grade level, in the chosen language | **No**, only verified structured data |
+| **Explainer** | Rewrites the verified plan in plain language at about a 5th-grade level, in the chosen language | **No**, only the verified items and their verified source sentences |
 
 Plain Python does the rest:
 
@@ -122,7 +122,7 @@ Plain Python does the rest:
 | One agent call running away | Hard `--max-budget-usd` cap on every `claude -p` call; the Checker may call only its four tools | `app/llm.py` |
 | Overspending | 150k-token cap per run, 40 runs per day, 10 MB / 10-page upload limit, timeouts | `app/config.py` |
 | XSS from model output | Every model or document string is escaped before rendering | `app/static/app.js` |
-| Privacy | Documents are processed in memory and not stored; logs keep token counts only, no text or names | `app/pipeline.py` |
+| Privacy | Papers are not saved by the app: their text is sent to Claude to be read and kept in memory only while the app runs; `claude -p` runs with session saving off; logs keep token counts, never text or names | `app/pipeline.py`, `app/llm.py` |
 
 Try the **Safety test** sample to watch the defenses work.
 
@@ -177,4 +177,6 @@ The test dataset is the six PDFs in `data/samples/` (about 40 KB in total): hear
 
 - Handwriting and very blurry photos may not transcribe well; the app asks for a better photo rather than guessing.
 - The schedule uses common default clock times (for example, twice daily means 8 AM and 8 PM, or 8 AM and 6 PM with meals). The family can move them in their calendar.
-- It does not check for drug interactions, and it never adds medical advice that is not in the papers.
+- It does not check for drug interactions or dose safety: it restates the papers, so an error in the papers is repeated faithfully.
+- Code blocks the Explainer from adding numbers, purposes or extra tips, but the meaning of each translated sentence is not machine-checked; every card shows the hospital's original sentence next to the translation.
+- Clock times are suggestions (the papers say how often, not at what time), and photo inputs are checked against the transcription, not the image.

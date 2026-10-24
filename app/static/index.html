@@ -39,7 +39,7 @@
           <select id="language" aria-label="Language for the plan"></select>
 
           <button id="go" class="btn primary big" type="submit" disabled>Make our plan</button>
-          <p class="fine">Your papers are read once to build the plan and are not stored. Names are not saved.</p>
+          <p class="fine">Going Home does not save your papers. Their text is sent to Claude to be read, and the plan is kept only while the app is open. Logs record token counts, never text or names.</p>
         </form>
 
         <div class="card samples-card">
@@ -47,6 +47,19 @@
           <p class="muted">Synthetic discharge papers for fictional patients.</p>
           <div id="samples" class="samples"></div>
         </div>
+      </div>
+
+      <div class="scope">
+        <div class="scope-col does"><h3>What Going Home does</h3><ul>
+          <li>Reads your hospital discharge papers and <b>restates</b> them: which medicines, how much, when, and for how long</li>
+          <li>Turns them into a timetable, phone reminders, a warning-signs card and a printable chart</li>
+          <li>Translates them into plain words in your language, with the hospital's own sentence one tap away</li>
+          <li>Lists questions for your doctor when the papers are unclear</li></ul></div>
+        <div class="scope-col doesnt"><h3>What it never does</h3><ul>
+          <li>Diagnose, recommend a treatment, or give medical advice</li>
+          <li>Change a dose, add a medicine, or fill a gap with a guess</li>
+          <li>Show a dose it could not match to your papers</li>
+          <li>Replace your care team: if anything differs from what they told you, follow them</li></ul></div>
       </div>
 
       <div class="how">
