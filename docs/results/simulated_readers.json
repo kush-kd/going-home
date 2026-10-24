@@ -1,0 +1,305 @@
+{
+ "note": "AI personas (claude haiku) graded by claude sonnet against a hand-written key. Not real users.",
+ "results": [
+  {
+   "case": "05_stroke_afib_chen_guoliang.pdf",
+   "persona": "Mei",
+   "plan_language": "中文 (Chinese, Simplified)",
+   "condition": "original papers",
+   "score": 5.0,
+   "max": 6,
+   "questions": [
+    "Which medicines should your father take in the evening, and how much of each?",
+    "Which medicines must he stop taking?",
+    "Name three warning signs that mean you should call 911.",
+    "When and where is the neurology appointment?",
+    "What is the most acetaminophen (Tylenol) he can take in one day?",
+    "What changed about his atorvastatin?"
+   ],
+   "answers": [
+    "I can see that Metformin 500 mg should be taken with dinner. But the medicine list has short words like 'BID' and 'QHS' that I don't understand, so I'm not sure about the other evening medicines.",
+    "Aspirin 81 mg and Ginkgo biloba",
+    "Face drooping on one side, trouble speaking or understanding, and sudden severe headache",
+    "Wednesday, November 4, 2026 at 9:00 AM, at Maplewood Neuroscience Center, 4th floor",
+    "3,000 mg per day",
+    "The dose increased. Before it was 20 mg, now it is 80 mg."
+   ],
+   "grades": [
+    {
+     "score": 0.5,
+     "why": "Correctly identifies metformin 500mg with dinner, but fails to identify apixaban 5mg and metoprolol 25mg for evening, admitting confusion about abbreviations - incomplete for safe administration."
+    },
+    {
+     "score": 1,
+     "why": "Correctly lists both medicines to stop: aspirin 81mg and ginkgo biloba."
+    },
+    {
+     "score": 1,
+     "why": "Gives three valid stroke warning signs matching the key (face drooping, trouble speaking, severe headache)."
+    },
+    {
+     "score": 1,
+     "why": "Correct date, time, and location matching the key exactly."
+    },
+    {
+     "score": 1,
+     "why": "Correct maximum daily acetaminophen dose of 3,000 mg."
+    },
+    {
+     "score": 0.5,
+     "why": "Correctly notes the dose change from 20mg to 80mg but omits that it is now taken at bedtime, which is part of the key change."
+    }
+   ]
+  },
+  {
+   "case": "05_stroke_afib_chen_guoliang.pdf",
+   "persona": "Mei",
+   "plan_language": "中文 (Chinese, Simplified)",
+   "condition": "Going Home plan",
+   "score": 5.5,
+   "max": 6,
+   "questions": [
+    "Which medicines should your father take in the evening, and how much of each?",
+    "Which medicines must he stop taking?",
+    "Name three warning signs that mean you should call 911.",
+    "When and where is the neurology appointment?",
+    "What is the most acetaminophen (Tylenol) he can take in one day?",
+    "What changed about his atorvastatin?"
+   ],
+   "answers": [
+    "Evening medicines: Metformin 500 mg (one tablet at 6pm), Apixaban 5 mg (one tablet at 8pm), Metoprolol tartrate 25 mg (one tablet at 8pm), and Atorvastatin 80 mg (one tablet at 9pm).",
+    "Must stop Aspirin and Ginkgo biloba supplement. Both can cause more bleeding with Apixaban.",
+    "Three warning signs to call 911: one side of face drooping, weak arm or leg, sudden bad headache.",
+    "November 4, 2026 at 9 o'clock in the morning at Maplewood Neuroscience Center, floor 4.",
+    "3,000 mg per day.",
+    "The dose increased from 20 mg to 80 mg."
+   ],
+   "grades": [
+    {
+     "score": 1,
+     "why": "Correctly lists all four evening medicines (metformin, apixaban, metoprolol, atorvastatin) with correct doses matching the key; timing breakdown is a reasonable elaboration consistent with the key."
+    },
+    {
+     "score": 1,
+     "why": "Correctly identifies both medicines to stop (aspirin and ginkgo biloba) matching the key exactly."
+    },
+    {
+     "score": 1,
+     "why": "Provides three valid 911 warning signs (face drooping, weak arm/leg, sudden bad headache) that are all included in the key's acceptable list."
+    },
+    {
+     "score": 1,
+     "why": "Correctly states the date, time, location, and floor, matching the key exactly."
+    },
+    {
+     "score": 1,
+     "why": "Correctly states 3,000 mg per day, matching the key exactly."
+    },
+    {
+     "score": 0.5,
+     "why": "Correctly notes the dose increase from 20mg to 80mg but omits the key detail that atorvastatin is now taken at bedtime."
+    }
+   ]
+  },
+  {
+   "case": "02_pneumonia_diabetes_maria_garcia.pdf",
+   "persona": "Rosa",
+   "plan_language": "Español (Spanish)",
+   "condition": "original papers",
+   "score": 5.5,
+   "max": 6,
+   "questions": [
+    "How many days does Maria take the antibiotic, and when is the last dose?",
+    "How much insulin does she inject, and when?",
+    "What should she do if her blood sugar is below 70?",
+    "When should you call 911?",
+    "When is her follow-up appointment?",
+    "How often can she take acetaminophen, and what is the daily limit?"
+   ],
+   "answers": [
+    "5 days; last dose evening of 10/21/2026",
+    "18 units, once daily at bedtime",
+    "Eat or drink 15 grams of fast sugar (4 ounces juice or 4 glucose tablets), wait 15 minutes, check again",
+    "Trouble breathing; lips or face turn blue or gray; becomes confused or very sleepy; blood sugar below 54 that doesn't come up after treatment; or passes out",
+    "Friday 10/23/2026 at 9:15 AM with Dr. Laura Chen at Maplewood Primary Care, Suite 110",
+    "Every 8 hours as needed; maximum 3,000 mg in 24 hours"
+   ],
+   "grades": [
+    {
+     "score": 1,
+     "why": "Matches key exactly: 5 days, last dose evening of 10/21/2026."
+    },
+    {
+     "score": 1,
+     "why": "Matches key exactly: 18 units, once daily at bedtime."
+    },
+    {
+     "score": 1,
+     "why": "Matches key: 15g fast sugar, wait 15 min, recheck."
+    },
+    {
+     "score": 1,
+     "why": "Matches key: breathing trouble, blue/gray lips, confusion/sleepiness, BG<54 not improving, or passing out."
+    },
+    {
+     "score": 1,
+     "why": "Matches key exactly: Friday 10/23/2026 9:15 AM, Dr. Laura Chen, Maplewood Primary Care, Suite 110."
+    },
+    {
+     "score": 0.5,
+     "why": "Gives frequency (every 8 hours) and daily limit (3,000 mg) correctly, but omits the per-dose amount (2 tablets/1,000 mg) specified in the key."
+    }
+   ]
+  },
+  {
+   "case": "02_pneumonia_diabetes_maria_garcia.pdf",
+   "persona": "Rosa",
+   "plan_language": "Español (Spanish)",
+   "condition": "Going Home plan",
+   "score": 4.5,
+   "max": 6,
+   "questions": [
+    "How many days does Maria take the antibiotic, and when is the last dose?",
+    "How much insulin does she inject, and when?",
+    "What should she do if her blood sugar is below 70?",
+    "When should you call 911?",
+    "When is her follow-up appointment?",
+    "How often can she take acetaminophen, and what is the daily limit?"
+   ],
+   "answers": [
+    "5 days; last dose is the night of October 21, 2026",
+    "18 units at 9:00 p.m. every night",
+    "Eat or drink 15 grams of fast sugar (4 ounces juice or 4 glucose tablets), wait 15 minutes, check again",
+    "If she has trouble breathing, lips or face turn purple or gray, feels confused or very sleepy, blood sugar below 54 that doesn't go up after treatment, or faints",
+    "October 23, 2026 at 9:15 a.m. with Dr. Laura Chen",
+    "Every 8 hours, up to 3 times a day; daily limit 3,000 mg"
+   ],
+   "grades": [
+    {
+     "score": 1,
+     "why": "Correctly states 5 days with last dose the night (evening) of 10/21/2026, matching the key."
+    },
+    {
+     "score": 1,
+     "why": "Correctly states 18 units once daily, with bedtime specified as 9:00 p.m., consistent with the key."
+    },
+    {
+     "score": 1,
+     "why": "Matches the key exactly: 15g fast sugar, wait 15 minutes, recheck."
+    },
+    {
+     "score": 0.5,
+     "why": "Mostly correct but says lips/face turn 'purple' instead of 'blue or gray' as in the key — an inaccurate color detail for a safety-critical sign."
+    },
+    {
+     "score": 0.5,
+     "why": "Correct date, time, and doctor, but omits the location (Maplewood Primary Care, Suite 110) specified in the key."
+    },
+    {
+     "score": 0.5,
+     "why": "Correctly states frequency (every 8 hours, max 3x/day) and daily limit (3000 mg), but omits the per-dose amount (2 tablets/1000 mg) from the key."
+    }
+   ]
+  },
+  {
+   "case": "03_hip_replacement_dorothy_thompson.pdf",
+   "persona": "Tom",
+   "plan_language": "English",
+   "condition": "original papers",
+   "score": 5.5,
+   "max": 6,
+   "questions": [
+    "How often does Dorothy take the blood thinner, and for how long?",
+    "How often does she take acetaminophen, and is it only when in pain?",
+    "What is the most oxycodone she can take in a day?",
+    "Which medicine must she not take right now?",
+    "Name two signs that mean call 911.",
+    "What should you do about her other home medicines?"
+   ],
+   "answers": [
+    "Twice a day for 35 days",
+    "Every 8 hours, and it's scheduled—not just when she has pain",
+    "4 tablets maximum in a day",
+    "Aspirin",
+    "Chest pain or sudden shortness of breath; one calf swollen, red, or painful (or any two of the emergency signs listed)",
+    "Keep taking her other home medicines as before"
+   ],
+   "grades": [
+    {
+     "score": 1,
+     "why": "Correctly states twice daily for 35 days, matching apixaban dosing schedule."
+    },
+    {
+     "score": 1,
+     "why": "Correctly identifies every 8 hours on a schedule, not just for pain."
+    },
+    {
+     "score": 1,
+     "why": "Correctly states 4 tablets maximum per day."
+    },
+    {
+     "score": 1,
+     "why": "Correctly identifies aspirin as the medicine to hold."
+    },
+    {
+     "score": 1,
+     "why": "Provides two valid emergency signs matching the key (chest pain/shortness of breath; swollen/red/painful calf)."
+    },
+    {
+     "score": 0.5,
+     "why": "States to resume home meds as before, which matches the discharge instruction, but omits the key point that unclear/unlisted medicines should prompt asking the doctor."
+    }
+   ]
+  },
+  {
+   "case": "03_hip_replacement_dorothy_thompson.pdf",
+   "persona": "Tom",
+   "plan_language": "English",
+   "condition": "Going Home plan",
+   "score": 6,
+   "max": 6,
+   "questions": [
+    "How often does Dorothy take the blood thinner, and for how long?",
+    "How often does she take acetaminophen, and is it only when in pain?",
+    "What is the most oxycodone she can take in a day?",
+    "Which medicine must she not take right now?",
+    "Name two signs that mean call 911.",
+    "What should you do about her other home medicines?"
+   ],
+   "answers": [
+    "Twice a day (8:00 AM and 8:00 PM) for 35 days, until November 20, 2026.",
+    "Three times a day on a schedule (6:00 AM, 2:00 PM, and 10:00 PM), not just when she has pain.",
+    "No more than 4 tablets in one day.",
+    "Aspirin - she must not take it right now.",
+    "If her hip feels like it popped out of place, or if one calf becomes swollen, red, or painful.",
+    "The paperwork says to ask the doctor which other home medicines she should start again and what doses to use."
+   ],
+   "grades": [
+    {
+     "score": 1,
+     "why": "Correctly states twice daily for 35 days, last dose 11/20/2026, matching the key."
+    },
+    {
+     "score": 1,
+     "why": "Correctly identifies scheduled dosing three times daily, explicitly not just for pain, matching key intent (max dose not asked)."
+    },
+    {
+     "score": 1,
+     "why": "Matches key exactly: no more than 4 tablets per day."
+    },
+    {
+     "score": 1,
+     "why": "Correctly identifies aspirin as the medicine to withhold."
+    },
+    {
+     "score": 1,
+     "why": "Provides two valid 911 warning signs from the key list (hip popped out, swollen/red/painful calf)."
+    },
+    {
+     "score": 1,
+     "why": "Correctly states to ask the doctor about resuming other home medications and doses, matching key."
+    }
+   ]
+  }
+ ]
+}

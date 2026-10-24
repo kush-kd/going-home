@@ -56,9 +56,9 @@ def test_explainer_never_sees_the_raw_document(monkeypatch, sample_bytes):
     seen = {}
     fake = FakeLLM()
 
-    async def spy(agent, system, user, schema, images=None):
+    async def spy(agent, system, user, schema, images=None, **kw):
         seen.setdefault(agent, user)
-        return await fake(agent, system, user, schema, images)
+        return await fake(agent, system, user, schema, images, **kw)
 
     run_pipeline(monkeypatch, spy, sample_bytes(HF))
     assert "<discharge_document>" in seen["reader"]

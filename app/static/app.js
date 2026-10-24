@@ -31,15 +31,31 @@ async function init() {
     return;
   }
   const llm = status.llm;
-  $("#provider").textContent = llm.ready ? `AI: ${llm.message}` : "AI backend not ready";
-  $("#provider").className = "pill " + (llm.ready ? "ok" : "bad");
-  $("#provider").title = llm.message;
+  state.demo = status.demo;
+  if (status.demo) {
+    $("#provider").textContent = "Demo mode: replaying recorded real runs";
+    $("#provider").className = "pill warn";
+    $("#provider").title = llm.message;
+    $("#demo-banner").hidden = false;
+    if (status.demo_reason === "forced") {
+      $("#demo-why").textContent = "This copy is set to demo mode (GOING_HOME_MODE=demo), so";
+      $("#demo-reason").textContent = "";
+    } else {
+      $("#demo-reason").textContent = `(${llm.message})`;
+    }
+    $("#upload-form").classList.add("disabled");
+    $("#file").disabled = true;
+  } else {
+    $("#provider").textContent = llm.ready ? `AI: ${llm.message}` : "AI backend not ready";
+    $("#provider").className = "pill " + (llm.ready ? "ok" : "bad");
+    $("#provider").title = llm.message;
+  }
 
   $("#language").innerHTML = status.languages.map((l) => `<option>${esc(l)}</option>`).join("");
 
   $("#samples").innerHTML = status.samples.map((s) => `
     <div class="sample ${s.safety_test ? "safety" : ""}">
-      <div><strong>${esc(s.title)}</strong><small>${esc(s.subtitle)}</small></div>
+      <div><strong>${esc(s.title)}</strong><small>${esc(s.subtitle)}</small>${status.demo && s.recorded.length ? `<small class="rec">Recorded runs: ${esc(s.recorded.join(", "))}</small>` : ""}</div>
       <div class="btns">
         <a class="btn ghost" href="/samples/${encodeURIComponent(s.file)}" target="_blank" rel="noopener">View</a>
         <button class="btn primary" data-sample="${esc(s.file)}">Use this</button>
@@ -91,7 +107,8 @@ async function startRun(url, fd) {
   $("#run-error").hidden = true;
   $("#retry").hidden = true;
   $(".spinner").classList.remove("stopped");
-  $("#progress-title").textContent = "Making your plan…";
+  $("#progress-title").textContent = state.demo ? "Replaying a recorded real run…" : "Making your plan…";
+  $("#progress-sub").textContent = state.demo ? "Demo mode: these are the real steps, models and token counts from a run recorded earlier, shown faster than real time." : "Four AI agents and three safety checks are working through the papers. This usually takes 1 to 3 minutes.";
   try {
     const res = await fetch(url, { method: "POST", body: fd });
     const body = await res.json();
@@ -129,6 +146,7 @@ function renderSteps(steps) {
     if (t) bits.push(`${t.toLocaleString()} tokens`);
     if (s.elapsed_s != null) bits.push(`${s.elapsed_s}s`);
     if (s.failed != null) bits.push(s.failed ? `${s.failed} item(s) flagged` : "all items matched");
+    if (s.tools_used) bits.push(`${s.tools_used} tool calls`);
     if (s.issues != null) bits.push(`${s.issues} issue(s)` + (s.dropped ? `, ${s.dropped} unsupported dropped` : ""));
     if (s.rejected != null) bits.push(s.rejected ? `${s.rejected} rejected` : "all numbers matched");
     if (s.hidden_text) bits.push(`${s.hidden_text} hidden text block(s) removed`);
@@ -196,6 +214,12 @@ function renderResult(run) {
 
 function renderNotices(r) {
   const out = [];
+  if (r.replay) {
+    const when = r.replay.recorded_at ? new Date(r.replay.recorded_at).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" }) : "earlier";
+    const other = r.replay.requested_language && r.replay.requested_language !== r.replay.language
+      ? ` You chose ${esc(r.replay.requested_language)}, but this sample was recorded in ${esc(r.replay.language)}; other languages need a live run.` : "";
+    out.push(`<div class="alert info"><span class="ico">▶️</span><div><strong>Demo mode: this is a replay of a real run recorded ${esc(when)}</strong> with ${esc(r.replay.models.join(" and "))}. Nothing was generated just now.${other} To make plans live, log in to Claude Code on this computer (see the README).</div></div>`);
+  }
   const d = r.document;
   if (d.hidden_text.length) {
     out.push(`<div class="alert danger"><span class="ico">🛡️</span><div><strong>Hidden text was found in this document and ignored.</strong> It was invisible on the page (white or tiny text), which is a common way to sneak instructions to an AI.
@@ -360,6 +384,8 @@ function renderTrace(run) {
       <td class="num">${c.input_tokens.toLocaleString()}</td><td class="num">${c.cache_write_tokens.toLocaleString()}</td><td class="num">${c.cache_read_tokens.toLocaleString()}</td><td class="num">${c.output_tokens.toLocaleString()}</td>
       <td class="num">${c.latency_s}s</td><td class="num">${c.cost_usd != null ? "$" + c.cost_usd.toFixed(4) : "–"}</td></tr>`).join("");
   const T = m.totals;
+  const toolCalls = m.calls.flatMap((c) => (c.tool_calls || []).map((t) => ({ ...t, agent: c.agent })));
+  const toolTable = toolCalls.length ? `<div class="trace-section"><h3>Tools the Checker called (${toolCalls.length})</h3><table class="trace"><tr><th>#</th><th>Tool</th><th>Input</th><th>Result</th></tr>${toolCalls.map((t, i) => `<tr><td>${i + 1}</td><td>${esc(t.tool)}</td><td>${esc(Object.values(t.args || {}).join(", "))}</td><td>${esc(typeof t.result === "string" ? t.result : JSON.stringify(t.result)).slice(0, 160)}</td></tr>`).join("")}</table></div>` : "";
   const issues = (list) => list.length ? `<table class="trace"><tr><th>Severity</th><th>Problem</th><th>Document says</th></tr>${list.map((i) => `<tr><td>${esc(i.severity)}</td><td>${esc(i.problem)}</td><td>${esc(i.document_quote)}</td></tr>`).join("")}</table>` : `<p class="muted">None.</p>`;
   panel.innerHTML = `
     <div class="trace-cards">
@@ -376,6 +402,7 @@ function renderTrace(run) {
     <table class="trace"><tr><th>Agent</th><th>Step</th><th>Model</th><th>Input</th><th>Cache write</th><th>Cache read</th><th>Output</th><th>Time</th><th>Cost</th></tr>${rows}
       <tr><td colspan="3"><strong>Total</strong></td><td class="num"><strong>${T.input_tokens.toLocaleString()}</strong></td><td class="num"><strong>${T.cache_write_tokens.toLocaleString()}</strong></td><td class="num"><strong>${T.cache_read_tokens.toLocaleString()}</strong></td><td class="num"><strong>${T.output_tokens.toLocaleString()}</strong></td><td class="num"><strong>${m.elapsed_s}s</strong></td><td class="num"><strong>${m.cost_usd != null ? "$" + m.cost_usd.toFixed(4) : "–"}</strong></td></tr></table>
     ${Object.keys(r.checker.initial_grounding_problems || {}).length ? `<div class="trace-section"><h3>Quote and number check: caught on the first read, sent back to the Reader</h3><table class="trace"><tr><th>Item</th><th>Problem</th></tr>${Object.entries(r.checker.initial_grounding_problems).map(([id, ps]) => `<tr><td>${esc(id)}</td><td>${esc(ps.join("; "))}</td></tr>`).join("")}</table></div>` : ""}
+    ${toolTable}
     <div class="trace-section"><h3>Checker: first review</h3>${issues(r.checker.initial_issues)}</div>
     ${r.checker.rechecked ? `<div class="trace-section"><h3>Checker: after the repair round</h3>${issues(r.checker.remaining_issues)}</div>` : ""}
     ${r.checker.dropped_unsupported.length ? `<div class="trace-section"><h3>Checker claims thrown out (quote not in document)</h3>${issues(r.checker.dropped_unsupported)}</div>` : ""}

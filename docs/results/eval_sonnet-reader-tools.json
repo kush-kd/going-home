@@ -1,0 +1,162 @@
+{
+ "summary": {
+  "label": "sonnet-reader-tools",
+  "models": {
+   "transcriber": "sonnet",
+   "reader": "sonnet",
+   "checker": "sonnet",
+   "explainer": "sonnet"
+  },
+  "runs": 5,
+  "errors": 0,
+  "med_recall": 1.0,
+  "field_accuracy": 1.0,
+  "verified_rate": 1.0,
+  "avg_tokens": 48007,
+  "avg_cost_usd": 0.1819,
+  "avg_elapsed_s": 86.6
+ },
+ "rows": [
+  {
+   "sample": "01_heart_failure_ramesh_mehta.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [
+    "naproxen (Aleve)"
+   ],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 10,
+    "cache_write_tokens": 15588,
+    "cache_read_tokens": 26545,
+    "output_tokens": 10084
+   },
+   "total_tokens": 52227,
+   "cost_usd": 0.1685,
+   "elapsed_s": 81.1,
+   "models": [
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "02_pneumonia_diabetes_maria_garcia.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 10,
+    "cache_write_tokens": 13443,
+    "cache_read_tokens": 24519,
+    "output_tokens": 10070
+   },
+   "total_tokens": 48042,
+   "cost_usd": 0.1594,
+   "elapsed_s": 69.0,
+   "models": [
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "03_hip_replacement_dorothy_thompson.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 8,
+    "cache_write_tokens": 13475,
+    "cache_read_tokens": 16165,
+    "output_tokens": 11147
+   },
+   "total_tokens": 40795,
+   "cost_usd": 0.1686,
+   "elapsed_s": 85.0,
+   "models": [
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "04_copd_steroid_taper_joseph_kowalski.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": false,
+   "grounding_flags": {},
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 8,
+    "cache_write_tokens": 13981,
+    "cache_read_tokens": 16306,
+    "output_tokens": 9206
+   },
+   "total_tokens": 39501,
+   "cost_usd": 0.1513,
+   "elapsed_s": 70.3,
+   "models": [
+    "claude-sonnet-5"
+   ]
+  },
+  {
+   "sample": "05_stroke_afib_chen_guoliang.pdf",
+   "med_recall": 1.0,
+   "field_accuracy": 1.0,
+   "missed": [],
+   "extra": [],
+   "warnings_ok": true,
+   "appointments_ok": true,
+   "verified_rate": 1.0,
+   "repaired": true,
+   "grounding_flags": {
+    "a5": [
+     "purpose 'Primary care follow-up' was not found in the document (50%)"
+    ]
+   },
+   "checker_issues": [],
+   "checker_remaining": [],
+   "explainer_rejections": 0,
+   "tokens": {
+    "input_tokens": 10,
+    "cache_write_tokens": 22441,
+    "cache_read_tokens": 20233,
+    "output_tokens": 16785
+   },
+   "total_tokens": 59469,
+   "cost_usd": 0.2617,
+   "elapsed_s": 127.5,
+   "models": [
+    "claude-sonnet-5"
+   ]
+  }
+ ]
+}

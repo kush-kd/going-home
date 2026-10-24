@@ -13,6 +13,7 @@ import json
 import time
 import uuid
 from datetime import date, datetime
+from pathlib import Path
 from typing import Any, Callable
 
 from pydantic import ValidationError
@@ -108,6 +109,39 @@ class Run:
 
 RUNS: dict[str, Run] = {}
 
+RECORDED_DIR = config.ROOT / "data" / "recorded"
+REPLAY_SPEED = 1.0   # 0 in tests
+
+
+def recording_key(sample: str, language: str) -> str:
+    return f"{Path(sample).stem}__{language.split(' ')[0]}"
+
+
+def find_recording(sample: str, language: str) -> tuple[Path | None, str]:
+    """The recorded real run for this sample in this language, or in English as a fallback."""
+    for lang in (language, "English"):
+        f = RECORDED_DIR / f"{recording_key(sample, lang)}.json"
+        if f.exists():
+            return f, lang
+    return None, language
+
+
+async def replay(run: Run, path: Path) -> None:
+    """Demo mode: replay a recorded real run step by step (faster than real time), clearly labeled."""
+    rec = json.loads(path.read_text())
+    try:
+        for s in rec["steps"]:
+            detail = {k: v for k, v in s.items() if k not in ("key", "title", "status")}
+            run.step(s["key"], s["title"], "running", agent=s.get("agent"))
+            await asyncio.sleep(REPLAY_SPEED * min(1.6, 0.25 + (s.get("elapsed_s") or 0) / 30))
+            run.step(s["key"], s["title"], s["status"], **detail)
+        run.result = rec["result"] | {"ics": rec["ics"], "replay": {
+            "recorded_at": rec.get("recorded_at"), "language": rec["language"],
+            "requested_language": run.language, "models": sorted({c["model"] for c in rec["result"]["metrics"]["calls"]})}}
+        run.status = "done"
+    except Exception as e:  # noqa: BLE001
+        run.status, run.error = "error", f"Could not replay the recording: {e}"
+
 
 async def _call(run: Run, step_key: str, title: str, agent: str, coro_factory: Callable) -> LLMResult:
     run.budget.before_call()
@@ -118,10 +152,12 @@ async def _call(run: Run, step_key: str, title: str, agent: str, coro_factory: C
         run.step(step_key, title, "error", message=str(e))
         raise
     run.budget.after_call(r)
+    tool_calls = r.extra.get("tool_calls", [])
     call = {"step": step_key, "agent": agent, "model": r.model, "provider": r.provider, "latency_s": r.latency_s,
-            "cost_usd": r.cost_usd, **r.usage.as_dict()}
+            "cost_usd": r.cost_usd, "turns": r.extra.get("num_turns"), "tool_calls": tool_calls, **r.usage.as_dict()}
     run.calls.append(call)
-    run.step(step_key, title, "done", agent=agent, model=r.model, tokens=r.usage.as_dict(), cost_usd=r.cost_usd, latency_s=r.latency_s)
+    run.step(step_key, title, "done", agent=agent, model=r.model, tokens=r.usage.as_dict(), cost_usd=r.cost_usd,
+             latency_s=r.latency_s, tools_used=len(tool_calls))
     return r
 
 

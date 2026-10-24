@@ -46,7 +46,7 @@ class FakeLLM:
         self.tokens = tokens
         self.calls: list[str] = []
 
-    async def __call__(self, agent, system, user, schema, images=None):
+    async def __call__(self, agent, system, user, schema, images=None, tools=None, run_dir=None):
         self.calls.append(agent)
         if agent == "reader":
             data = copy.deepcopy(self.repair if ("<problems>" in user and self.repair) else self.reader)

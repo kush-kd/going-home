@@ -140,8 +140,10 @@ def main() -> None:
     OUT.mkdir(exist_ok=True)
     for f in OUT.glob("*.webm"):
         f.unlink()
+    import os
+    env = os.environ | {"MAX_RUNS_PER_DAY": "1000", "GOING_HOME_MODE": "live"}   # the app's daily cap is for real users
     server = subprocess.Popen([str(APP / ".venv/bin/uvicorn"), "app.main:app", "--app-dir", str(APP), "--port", str(PORT)],
-                              stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+                              stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, env=env)
     try:
         time.sleep(2.5)
         # pdfplumber lives in the app's venv; borrow it just to render the sample page image.
@@ -238,8 +240,10 @@ def main() -> None:
             d.shot("zh_trace")
             d.cap(f"How this plan was made: each Claude agent, its model, tokens, time and cost "
                   f"({zh['total_tokens']:,} tokens, about ${zh['cost_usd']:.2f} at API prices).", 5)
-            d.scroll(350, 1.5)
-            d.sleep(1.5)
+            page.evaluate("document.querySelector('.trace-section h3') && [...document.querySelectorAll('.trace-section h3')].find(h => h.textContent.startsWith('Tools'))?.scrollIntoView({block: 'center', behavior: 'smooth'})")
+            d.sleep(1.2)
+            d.shot("zh_tools")
+            d.cap("The Checker agent uses real tools: it lists the medicine lines, searches the papers and verifies items itself.", 5)
 
             # 5. Safety test
             d.cap(None, 0.4)

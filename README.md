@@ -16,6 +16,26 @@ Upload a discharge summary (PDF or photo) and pick a language. Going Home's AI a
 
 ---
 
+## Results from real runs (2026-10-24)
+
+| On 5 synthetic cases vs a hand-written answer key | |
+|---|---|
+| Medicines found | **100%** |
+| Checked fields correct (status, strength, dose, schedule, dates, taper steps) | **100%** |
+| Average cost per plan (API list prices) / tokens / time | **$0.198** / ~46,000 / ~70 s |
+| Safety test (hidden + visible prompt injection) | both attacks removed before any agent read the file |
+
+The report, slides and every log behind these numbers are in `docs/`. The report and the slide deck open by double-clicking.
+
+## For the teaching staff: two ways to run it
+
+| Your computer | What happens |
+|---|---|
+| **Claude Code installed and logged in** (`claude`, then `/login`) | **Live mode.** Make plans from any of the sample PDFs, or upload your own. |
+| **No Claude login** (for example, only the course's PORTKEY/OPENAI keys) | **Demo mode, automatically.** The sample buttons replay *real runs recorded on 2026-10-24* (same agents, models, token counts and plans), labeled as replays on every screen. Uploading new papers needs live mode. |
+
+You can force a mode with `GOING_HOME_MODE=live` or `GOING_HOME_MODE=demo` in `.env`. The app needs no API keys in either mode. A 2.5-minute video of real runs is submitted on Canvas as a backup.
+
 ## Run it (about 5 minutes)
 
 You need **Python 3.10 or newer**.
@@ -43,13 +63,17 @@ Before the first run:
 
 The status pill in the top-right corner of the app says whether the subscription is ready. Any `ANTHROPIC_API_KEY` in the environment is deliberately stripped from the CLI's environment, so calls can never switch to metered API billing. Models per agent and the safety limits can be changed in an optional `.env` file (see `.env.example`).
 
+### Demo recordings
+
+`data/recorded/` holds nine real runs: every sample in English, plus the patients' own languages (Chinese for case 05, Spanish for 02, Hindi for 01). To refresh one, run `python scripts/record_replays.py <sample.pdf> "<language>"`.
+
 ### Tests (no AI needed)
 
 ```bash
 pytest -q
 ```
 
-26 tests cover the scheduler, the calendar, and every safety defense: hidden-text removal, prompt-injection removal (without removing real instructions such as "STOP aspirin. You are now on apixaban"), wrong doses caught, invented quotes caught, the capped repair loop, the Explainer number check, and the token, call and daily budgets. A fake model stands in for the AI, so the tests are free and repeatable.
+30 tests cover the scheduler, the calendar, and every safety defense: hidden-text removal, prompt-injection removal (without removing real instructions such as "STOP aspirin. You are now on apixaban"), wrong doses caught, invented quotes caught, the capped repair loop, the Explainer number check, and the token, call and daily budgets. A fake model stands in for the AI, so the tests are free and repeatable.
 
 ---
 
@@ -76,7 +100,7 @@ flowchart LR
 |---|---|---|
 | **Transcriber** (photos only) | Copies every line of a photo or scan into text | The image only |
 | **Reader** | Extracts medicines, doses, schedules, tapers, appointments, warning signs and unclear items into a strict schema, each with an exact `source_quote` | Yes, wrapped in `<discharge_document>` tags as untrusted data |
-| **Checker** | Independently compares the plan with the document: missed medicines, wrong doses, a stopped medicine shown as active, missing warnings | Yes |
+| **Checker** | Independently compares the plan with the document (missed medicines, wrong doses, a stopped medicine shown as active, missing warnings), **using real tools** from an MCP server (`app/mcp_tools.py`): `list_medication_lines`, `search_document`, `check_quote`, `verify_item` | Yes |
 | **Explainer** | Rewrites the verified plan in plain language at about a 5th-grade level, in the chosen language | **No**, only verified structured data |
 
 Plain Python does the rest:
@@ -95,6 +119,7 @@ Plain Python does the rest:
 | Checker invents a problem | Its claims must quote the document, or they are dropped | `app/pipeline.py` |
 | Explainer adds a number or advice | Number check per card, in every script (Hindi digits too); fallback to the doctor's words | `app/grounding.py` |
 | Endless loops | At most 1 repair round and 8 model calls per run | `app/config.py` |
+| One agent call running away | Hard `--max-budget-usd` cap on every `claude -p` call; the Checker may call only its four tools | `app/llm.py` |
 | Overspending | 150k-token cap per run, 40 runs per day, 10 MB / 10-page upload limit, timeouts | `app/config.py` |
 | XSS from model output | Every model or document string is escaped before rendering | `app/static/app.js` |
 | Privacy | Documents are processed in memory and not stored; logs keep token counts only, no text or names | `app/pipeline.py` |
@@ -133,6 +158,7 @@ app/
   intake.py       upload limits, hidden-text and injection filters
   grounding.py    quote, number and readability checks
   scheduler.py    timetable and .ics calendar (no AI)
+  mcp_tools.py    MCP tool server the Checker agent calls (search, quote check, item check)
   static/         the web app (HTML, CSS, JS, no build step)
 data/
   samples/        6 synthetic discharge PDFs (5 cases + 1 safety test)

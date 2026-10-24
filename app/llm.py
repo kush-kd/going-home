@@ -16,8 +16,10 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 import time
 from dataclasses import dataclass, field
+from pathlib import Path
 
 from . import config
 
@@ -124,7 +126,11 @@ async def _run(cmd: list[str], stdin: bytes, timeout: int) -> tuple[int, bytes, 
     return proc.returncode or 0, out, err
 
 
-async def _claude(agent: str, system: str, user: str, schema: dict, images: list[Image] | None) -> LLMResult:
+MCP_SERVER = config.ROOT / "app" / "mcp_tools.py"
+
+
+async def _claude(agent: str, system: str, user: str, schema: dict, images: list[Image] | None,
+                  tools: list[str] | None = None, run_dir: str | None = None) -> LLMResult:
     global _claude_error
     cli = _claude_cli()
     if not cli:
@@ -139,7 +145,14 @@ async def _claude(agent: str, system: str, user: str, schema: dict, images: list
         "--disable-slash-commands",
         "--no-session-persistence",
         "--json-schema", json.dumps(schema),
+        "--max-budget-usd", str(config.MAX_USD_PER_CALL),   # hard spending cap for this one call
     ]
+    if tools:
+        # Real tool use: this call may use only these tools, served by our MCP server for this run.
+        mcp_cfg = Path(run_dir) / "mcp.json"
+        mcp_cfg.write_text(json.dumps({"mcpServers": {"goinghome": {
+            "command": sys.executable, "args": [str(MCP_SERVER)], "env": {"GH_RUN_DIR": run_dir}}}}))
+        cmd += ["--mcp-config", str(mcp_cfg), "--allowedTools", " ".join(f"mcp__goinghome__{t}" for t in tools)]
     if images:
         # Photos go in as image content blocks over stream-json.
         content = [
@@ -162,6 +175,8 @@ async def _claude(agent: str, system: str, user: str, schema: dict, images: list
             continue
         if envelope.get("is_error") or envelope.get("structured_output") is None:
             last_err = str(envelope.get("result") or envelope.get("errors") or "no structured output")[:400]
+            if "budget" in last_err.lower() or envelope.get("subtype") == "error_max_budget_usd":
+                raise LLMError(f"Stopped: this agent call reached its spending cap of ${config.MAX_USD_PER_CALL:.2f}.")
             if "disabled" in last_err.lower() or "login" in last_err.lower() or "auth" in last_err.lower():
                 _claude_error = f"Claude subscription unavailable: {last_err}"
                 raise LLMError(_claude_error)
@@ -181,9 +196,17 @@ async def _claude(agent: str, system: str, user: str, schema: dict, images: list
             provider="claude-subscription",
             latency_s=round(time.monotonic() - started, 2),
             cost_usd=envelope.get("total_cost_usd"),
-            extra={"models_used": models_used, "requested_model": model},
+            extra={"models_used": models_used, "requested_model": model, "num_turns": envelope.get("num_turns"),
+                   "tool_calls": _tool_calls(run_dir) if tools else []},
         )
     raise LLMError(f"Claude call failed: {last_err}")
+
+
+def _tool_calls(run_dir: str | None) -> list[dict]:
+    f = Path(run_dir or ".") / "tool_calls.jsonl"
+    if not f.exists():
+        return []
+    return [json.loads(line) for line in f.read_text().splitlines() if line.strip()]
 
 
 def _parse_claude_output(out: bytes, streamed: bool) -> dict | None:
@@ -207,5 +230,6 @@ def _parse_claude_output(out: bytes, streamed: bool) -> dict | None:
 
 # ------------------------------------------------------------------ entry point
 
-async def call_structured(agent: str, system: str, user: str, schema: dict, images: list[Image] | None = None) -> LLMResult:
-    return await _claude(agent, system, user, schema, images)
+async def call_structured(agent: str, system: str, user: str, schema: dict, images: list[Image] | None = None,
+                          tools: list[str] | None = None, run_dir: str | None = None) -> LLMResult:
+    return await _claude(agent, system, user, schema, images, tools=tools, run_dir=run_dir)

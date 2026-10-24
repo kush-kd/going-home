@@ -8,151 +8,264 @@
     "agent": "reader",
     "model": "claude-opus-5-5",
     "provider": "claude-subscription",
-    "latency_s": 37.15,
-    "cost_usd": 0.1119344,
+    "latency_s": 36.48,
+    "cost_usd": 0.1013686,
+    "turns": 2,
+    "tool_calls": [],
     "input_tokens": 2,
-    "cache_write_tokens": 2109,
-    "cache_read_tokens": 4472,
-    "output_tokens": 4708
+    "cache_write_tokens": 0,
+    "cache_read_tokens": 6603,
+    "output_tokens": 5002
    },
    {
     "step": "checker",
     "agent": "checker",
     "model": "claude-sonnet-5",
     "provider": "claude-subscription",
-    "latency_s": 33.56,
-    "cost_usd": 0.0555746,
-    "input_tokens": 2,
-    "cache_write_tokens": 6303,
-    "cache_read_tokens": 1293,
-    "output_tokens": 3010
+    "latency_s": 10.08,
+    "cost_usd": 0.041595400000000005,
+    "turns": 7,
+    "tool_calls": [
+     {
+      "tool": "list_medication_lines",
+      "args": {},
+      "result": "9 lines"
+     },
+     {
+      "tool": "verify_item",
+      "args": {
+       "item_id": "m6"
+      },
+      "result": "{\"verified\": true, \"score\": 1.0, \"problems\": []}"
+     },
+     {
+      "tool": "verify_item",
+      "args": {
+       "item_id": "m3"
+      },
+      "result": "{\"verified\": true, \"score\": 1.0, \"problems\": []}"
+     },
+     {
+      "tool": "verify_item",
+      "args": {
+       "item_id": "a3"
+      },
+      "result": "{\"verified\": true, \"score\": 1.0, \"problems\": []}"
+     },
+     {
+      "tool": "check_quote",
+      "args": {
+       "quote": "Bring the log to"
+      },
+      "result": "{\"found\": true, \"match\": 1.0}"
+     }
+    ],
+    "input_tokens": 6,
+    "cache_write_tokens": 7805,
+    "cache_read_tokens": 20267,
+    "output_tokens": 631
    },
    {
     "step": "explainer",
     "agent": "explainer",
     "model": "claude-sonnet-5",
     "provider": "claude-subscription",
-    "latency_s": 49.48,
-    "cost_usd": 0.0726766,
+    "latency_s": 44.26,
+    "cost_usd": 0.06923259999999999,
+    "turns": 2,
+    "tool_calls": [],
     "input_tokens": 2,
-    "cache_write_tokens": 4722,
+    "cache_write_tokens": 4776,
     "cache_read_tokens": 1673,
-    "output_tokens": 5345
+    "output_tokens": 4979
    }
   ],
   "totals": {
-   "input_tokens": 6,
-   "cache_write_tokens": 13134,
-   "cache_read_tokens": 7438,
-   "output_tokens": 13063
+   "input_tokens": 10,
+   "cache_write_tokens": 12581,
+   "cache_read_tokens": 28543,
+   "output_tokens": 10612
   },
-  "total_tokens": 33641,
-  "cost_usd": 0.2402,
-  "elapsed_s": 86.7,
+  "total_tokens": 51746,
+  "cost_usd": 0.2122,
+  "elapsed_s": 80.8,
   "provider": "claude-subscription"
  },
  "safety": {
   "reading_grade_document": 10.2,
-  "reading_grade_plan": 4,
+  "reading_grade_plan": 4.1,
   "calls": [
    {
     "step": "reader",
     "agent": "reader",
     "model": "claude-opus-5-5",
     "provider": "claude-subscription",
-    "latency_s": 17.26,
-    "cost_usd": 0.04658639999999999,
+    "latency_s": 20.58,
+    "cost_usd": 0.044454400000000005,
+    "turns": 2,
+    "tool_calls": [],
     "input_tokens": 2,
-    "cache_write_tokens": 1038,
-    "cache_read_tokens": 4472,
-    "output_tokens": 1869
+    "cache_write_tokens": 0,
+    "cache_read_tokens": 5532,
+    "output_tokens": 2167
    },
    {
     "step": "checker",
     "agent": "checker",
     "model": "claude-sonnet-5",
     "provider": "claude-subscription",
-    "latency_s": 8.6,
-    "cost_usd": 0.0160906,
-    "input_tokens": 2,
-    "cache_write_tokens": 2572,
-    "cache_read_tokens": 1293,
-    "output_tokens": 554
+    "latency_s": 8.53,
+    "cost_usd": 0.020158199999999998,
+    "turns": 7,
+    "tool_calls": [
+     {
+      "tool": "list_medication_lines",
+      "args": {},
+      "result": "3 lines"
+     },
+     {
+      "tool": "verify_item",
+      "args": {
+       "item_id": "m1"
+      },
+      "result": "{\"verified\": true, \"score\": 1.0, \"problems\": []}"
+     },
+     {
+      "tool": "verify_item",
+      "args": {
+       "item_id": "m2"
+      },
+      "result": "{\"verified\": true, \"score\": 1.0, \"problems\": []}"
+     },
+     {
+      "tool": "verify_item",
+      "args": {
+       "item_id": "w1"
+      },
+      "result": "{\"verified\": true, \"score\": 1.0, \"problems\": []}"
+     },
+     {
+      "tool": "verify_item",
+      "args": {
+       "item_id": "w2"
+      },
+      "result": "{\"verified\": true, \"score\": 1.0, \"problems\": []}"
+     }
+    ],
+    "input_tokens": 4,
+    "cache_write_tokens": 3511,
+    "cache_read_tokens": 6931,
+    "output_tokens": 472
    },
    {
     "step": "explainer",
     "agent": "explainer",
     "model": "claude-sonnet-5",
     "provider": "claude-subscription",
-    "latency_s": 100.71,
-    "cost_usd": 0.0385312,
+    "latency_s": 21.5,
+    "cost_usd": 0.0302486,
+    "turns": 2,
+    "tool_calls": [],
     "input_tokens": 2,
-    "cache_write_tokens": 2320,
+    "cache_write_tokens": 2300,
     "cache_read_tokens": 1673,
-    "output_tokens": 1944
+    "output_tokens": 2071
    }
   ],
   "totals": {
-   "input_tokens": 6,
-   "cache_write_tokens": 5930,
-   "cache_read_tokens": 7438,
-   "output_tokens": 4367
+   "input_tokens": 8,
+   "cache_write_tokens": 5811,
+   "cache_read_tokens": 14136,
+   "output_tokens": 4710
   },
-  "total_tokens": 17741,
-  "cost_usd": 0.1012,
-  "elapsed_s": 118,
+  "total_tokens": 24665,
+  "cost_usd": 0.0949,
+  "elapsed_s": 42.1,
   "provider": "claude-subscription"
  },
  "hip": {
   "reading_grade_document": 7.7,
-  "reading_grade_plan": 4.7,
+  "reading_grade_plan": 4.3,
   "calls": [
    {
     "step": "reader",
     "agent": "reader",
     "model": "claude-opus-5-5",
     "provider": "claude-subscription",
-    "latency_s": 47.06,
-    "cost_usd": 0.10596499999999999,
+    "latency_s": 35.36,
+    "cost_usd": 0.0927894,
+    "turns": 2,
+    "tool_calls": [],
     "input_tokens": 2,
     "cache_write_tokens": 0,
-    "cache_read_tokens": 6285,
-    "output_tokens": 5235
+    "cache_read_tokens": 6307,
+    "output_tokens": 4576
    },
    {
     "step": "checker",
     "agent": "checker",
     "model": "claude-sonnet-5",
     "provider": "claude-subscription",
-    "latency_s": 36.8,
-    "cost_usd": 0.0519146,
-    "input_tokens": 2,
-    "cache_write_tokens": 5833,
-    "cache_read_tokens": 1293,
-    "output_tokens": 2832
+    "latency_s": 13.22,
+    "cost_usd": 0.040065199999999995,
+    "turns": 6,
+    "tool_calls": [
+     {
+      "tool": "list_medication_lines",
+      "args": {},
+      "result": "10 lines"
+     },
+     {
+      "tool": "verify_item",
+      "args": {
+       "item_id": "m1"
+      },
+      "result": "{\"verified\": true, \"score\": 1.0, \"problems\": []}"
+     },
+     {
+      "tool": "verify_item",
+      "args": {
+       "item_id": "m3"
+      },
+      "result": "{\"verified\": true, \"score\": 1.0, \"problems\": []}"
+     },
+     {
+      "tool": "verify_item",
+      "args": {
+       "item_id": "m8"
+      },
+      "result": "{\"verified\": true, \"score\": 1.0, \"problems\": []}"
+     }
+    ],
+    "input_tokens": 4,
+    "cache_write_tokens": 7027,
+    "cache_read_tokens": 10046,
+    "output_tokens": 994
    },
    {
     "step": "explainer",
     "agent": "explainer",
     "model": "claude-sonnet-5",
     "provider": "claude-subscription",
-    "latency_s": 45.48,
-    "cost_usd": 0.06616059999999999,
+    "latency_s": 36.4,
+    "cost_usd": 0.0621766,
+    "turns": 2,
+    "tool_calls": [],
     "input_tokens": 2,
-    "cache_write_tokens": 4533,
+    "cache_write_tokens": 4547,
     "cache_read_tokens": 1673,
-    "output_tokens": 4769
+    "output_tokens": 4365
    }
   ],
   "totals": {
-   "input_tokens": 6,
-   "cache_write_tokens": 10366,
-   "cache_read_tokens": 9251,
-   "output_tokens": 12836
+   "input_tokens": 8,
+   "cache_write_tokens": 11574,
+   "cache_read_tokens": 18026,
+   "output_tokens": 9935
   },
-  "total_tokens": 32459,
-  "cost_usd": 0.224,
-  "elapsed_s": 92.6,
+  "total_tokens": 39543,
+  "cost_usd": 0.195,
+  "elapsed_s": 71.8,
   "provider": "claude-subscription"
  }
 }

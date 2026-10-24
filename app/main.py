@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import asyncio
+import os
+import time
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse, Response
@@ -16,6 +18,21 @@ LANGUAGES = ["English", "Español (Spanish)", "हिन्दी (Hindi)", "中
              "Português (Portuguese)", "Français (French)", "Kreyòl ayisyen (Haitian Creole)", "العربية (Arabic)"]
 
 _tasks: set[asyncio.Task] = set()
+
+# auto: live when Claude Code is logged in, otherwise demo mode (replays recorded real runs).
+MODE = os.getenv("GOING_HOME_MODE", "auto").lower()
+_status_cache: tuple[float, dict] = (0.0, {})
+
+
+def _llm_status() -> dict:
+    global _status_cache
+    if time.monotonic() - _status_cache[0] > 20:
+        _status_cache = (time.monotonic(), llm.status())
+    return _status_cache[1]
+
+
+def demo_mode() -> bool:
+    return MODE == "demo" or (MODE == "auto" and not _llm_status().get("ready"))
 
 
 SAMPLE_INFO = {
@@ -32,7 +49,8 @@ def _samples() -> list[dict]:
     out = []
     for p in sorted(config.SAMPLES_DIR.glob("*.pdf")):
         title, sub = SAMPLE_INFO.get(p.name[:2], (p.stem, "Synthetic discharge papers"))
-        out.append({"file": p.name, "title": title, "subtitle": sub, "safety_test": "SAFETY" in p.stem})
+        recorded = sorted({f.stem.split("__", 1)[1] for f in pipeline.RECORDED_DIR.glob(f"{p.stem}__*.json")})
+        out.append({"file": p.name, "title": title, "subtitle": sub, "safety_test": "SAFETY" in p.stem, "recorded": recorded})
     return out
 
 
@@ -45,7 +63,8 @@ def _sample_path(name: str):
 
 @app.get("/api/status")
 def status() -> dict:
-    return {"llm": llm.status(), "languages": LANGUAGES, "samples": _samples(),
+    return {"llm": _llm_status(), "demo": demo_mode(), "demo_reason": "forced" if MODE == "demo" else "no_login",
+            "languages": LANGUAGES, "samples": _samples(),
             "limits": {"max_upload_mb": config.MAX_UPLOAD_MB, "max_pages": config.MAX_PAGES, "runs_per_day": config.MAX_RUNS_PER_DAY}}
 
 
@@ -62,6 +81,9 @@ def _start(language: str, source: str, filename: str, data: bytes) -> dict:
 
 @app.post("/api/runs")
 async def create_run(file: UploadFile = File(...), language: str = Form("English")) -> dict:
+    if demo_mode():
+        raise HTTPException(400, "Demo mode: making a plan from new papers needs Claude Code logged in on this computer "
+                                 "(run `claude`, then /login). The sample buttons replay real recorded runs.")
     data = await file.read(config.MAX_UPLOAD_MB * 1024 * 1024 + 1)
     return _start(language, "upload", file.filename or "upload", data)
 
@@ -69,6 +91,16 @@ async def create_run(file: UploadFile = File(...), language: str = Form("English
 @app.post("/api/runs/sample")
 async def create_sample_run(name: str = Form(...), language: str = Form("English")) -> dict:
     path = _sample_path(name)
+    if demo_mode():
+        rec, _lang = pipeline.find_recording(name, language)
+        if rec is None:
+            raise HTTPException(400, "No recording of this sample is available in demo mode.")
+        run = pipeline.Run(language if language in LANGUAGES else "English", f"replay:{name}")
+        pipeline.RUNS[run.id] = run
+        task = asyncio.create_task(pipeline.replay(run, rec))
+        _tasks.add(task)
+        task.add_done_callback(_tasks.discard)
+        return {"run_id": run.id, "replay": True}
     return _start(language, f"sample:{name}", name, path.read_bytes())
 
 

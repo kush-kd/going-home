@@ -1,8 +1,11 @@
-"""The four agents. Each one is a single structured call with its own prompt and schema."""
+"""The four agents. Each has its own prompt and output schema; the Checker also calls real tools (app/mcp_tools.py)."""
 
 from __future__ import annotations
 
 import json
+import shutil
+import tempfile
+from pathlib import Path
 
 from . import config
 from .llm import Image, LLMResult, call_structured
@@ -46,13 +49,24 @@ async def reader_repair(doc_text: str, previous: Extraction, problems: list[str]
     return await call_structured("reader", system, user, json_schema(Extraction))
 
 
+CHECKER_TOOLS = ["list_medication_lines", "search_document", "check_quote", "verify_item"]
+
+
 async def checker(doc_text: str, plan: Extraction) -> LLMResult:
+    """The Checker reviews the plan with real tools: it searches the document and verifies items itself."""
+    run_dir = tempfile.mkdtemp(prefix="gh-check-")
+    Path(run_dir, "document.txt").write_text(doc_text)
+    Path(run_dir, "plan.json").write_text(plan.model_dump_json())
     user = (
         _doc_block(doc_text)
         + "\n\n<plan>\n" + plan.model_dump_json(indent=1, exclude={"hospital_summary"}) + "\n</plan>"
-        + "\n\nList every place where the plan does not match the document."
+        + "\n\nList every place where the plan does not match the document. Use your tools as described."
     )
-    return await call_structured("checker", _prompt("checker"), user, json_schema(CheckerReport))
+    try:
+        return await call_structured("checker", _prompt("checker"), user, json_schema(CheckerReport),
+                                     tools=CHECKER_TOOLS, run_dir=run_dir)
+    finally:
+        shutil.rmtree(run_dir, ignore_errors=True)
 
 
 async def explainer(plan_data: dict, language: str, label_keys: dict[str, str]) -> LLMResult:

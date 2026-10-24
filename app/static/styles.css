@@ -49,6 +49,9 @@ a { color: var(--teal-dark); }
 .pill { font-size: .78rem; padding: .25rem .7rem; border-radius: 99px; background: var(--line); color: var(--ink-2); }
 .pill.ok { background: var(--green-soft); color: var(--green); }
 .pill.bad { background: var(--red-soft); color: var(--red); }
+.pill.warn { background: var(--amber-soft); color: var(--amber); }
+.upload-card.disabled .dropzone, .upload-card.disabled #go { opacity: .45; pointer-events: none; }
+.sample small.rec { display: block; color: var(--teal-dark); font-weight: 600; }
 
 main { max-width: 1120px; margin: 0 auto; padding: 1.5rem; }
 

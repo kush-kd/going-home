@@ -38,6 +38,7 @@ MAX_TOKENS_PER_RUN = _int("MAX_TOKENS_PER_RUN", 150_000)   # input + output, cac
 MAX_LLM_CALLS_PER_RUN = _int("MAX_LLM_CALLS_PER_RUN", 8)
 MAX_RUNS_PER_DAY = _int("MAX_RUNS_PER_DAY", 40)
 MAX_REPAIR_ROUNDS = _int("MAX_REPAIR_ROUNDS", 1)
+MAX_USD_PER_CALL = float(os.getenv("MAX_USD_PER_CALL", "0.60"))   # hard cap passed to each claude -p call
 LLM_TIMEOUT_S = _int("LLM_TIMEOUT_S", 240)
 
 SAMPLES_DIR = ROOT / "data" / "samples"
