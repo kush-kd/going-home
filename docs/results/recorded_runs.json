@@ -8,22 +8,22 @@
     "agent": "reader",
     "model": "claude-opus-5-5",
     "provider": "claude-subscription",
-    "latency_s": 35.11,
-    "cost_usd": 0.151132,
+    "latency_s": 33.12,
+    "cost_usd": 0.0931086,
     "turns": 2,
     "tool_calls": [],
     "input_tokens": 2,
-    "cache_write_tokens": 6603,
-    "cache_read_tokens": 0,
-    "output_tokens": 4915
+    "cache_write_tokens": 0,
+    "cache_read_tokens": 6603,
+    "output_tokens": 4589
    },
    {
     "step": "checker",
     "agent": "checker",
     "model": "claude-sonnet-5",
     "provider": "claude-subscription",
-    "latency_s": 10.61,
-    "cost_usd": 0.051718599999999997,
+    "latency_s": 11.52,
+    "cost_usd": 0.045464,
     "turns": 7,
     "tool_calls": [
      {
@@ -48,74 +48,74 @@
      {
       "tool": "check_quote",
       "args": {
-       "quote": "Ginkgo biloba (supplement): STOP. It can increase bleeding with apixaban."
+       "quote": "Call 911 right away (BE FAST) if: face drooping on one side; arm or leg weakness; trouble speaking or\nunderstanding; sud"
       },
       "result": "{\"found\": true, \"match\": 1.0}"
      },
      {
       "tool": "check_quote",
       "args": {
-       "quote": "Call the Neurology Clinic at (203) 555-0150 if: a nosebleed or bleeding gums do not stop after 10 minutes; your"
+       "quote": "Call the Neurology Clinic at (203) 555-0150 if: a nosebleed or bleeding gums do not stop after 10 minutes; your\nurine tu"
       },
       "result": "{\"found\": true, \"match\": 1.0}"
      }
     ],
     "input_tokens": 6,
-    "cache_write_tokens": 9973,
-    "cache_read_tokens": 17673,
-    "output_tokens": 828
+    "cache_write_tokens": 7971,
+    "cache_read_tokens": 19940,
+    "output_tokens": 958
    },
    {
     "step": "explainer",
     "agent": "explainer",
     "model": "claude-sonnet-5",
     "provider": "claude-subscription",
-    "latency_s": 57.75,
-    "cost_usd": 0.08645,
+    "latency_s": 56.89,
+    "cost_usd": 0.0846746,
     "turns": 2,
     "tool_calls": [],
     "input_tokens": 2,
-    "cache_write_tokens": 6589,
-    "cache_read_tokens": 0,
-    "output_tokens": 6009
+    "cache_write_tokens": 4825,
+    "cache_read_tokens": 1753,
+    "output_tokens": 6502
    }
   ],
   "totals": {
    "input_tokens": 10,
-   "cache_write_tokens": 23165,
-   "cache_read_tokens": 17673,
-   "output_tokens": 11752
+   "cache_write_tokens": 12796,
+   "cache_read_tokens": 28296,
+   "output_tokens": 12049
   },
-  "total_tokens": 52600,
-  "cost_usd": 0.2893,
-  "elapsed_s": 92.9,
+  "total_tokens": 53151,
+  "cost_usd": 0.2232,
+  "elapsed_s": 90.1,
   "provider": "claude-subscription"
  },
  "safety": {
   "reading_grade_document": 10.2,
-  "reading_grade_plan": 4.7,
+  "reading_grade_plan": 5.1,
   "calls": [
    {
     "step": "reader",
     "agent": "reader",
     "model": "claude-opus-5-5",
     "provider": "claude-subscription",
-    "latency_s": 17.53,
-    "cost_usd": 0.05156240000000001,
+    "latency_s": 16.26,
+    "cost_usd": 0.0384544,
     "turns": 2,
     "tool_calls": [],
     "input_tokens": 2,
-    "cache_write_tokens": 1060,
-    "cache_read_tokens": 4472,
-    "output_tokens": 2109
+    "cache_write_tokens": 0,
+    "cache_read_tokens": 5532,
+    "output_tokens": 1867
    },
    {
     "step": "checker",
     "agent": "checker",
     "model": "claude-sonnet-5",
     "provider": "claude-subscription",
-    "latency_s": 6.99,
-    "cost_usd": 0.0204748,
+    "latency_s": 10.69,
+    "cost_usd": 0.021588000000000003,
     "turns": 7,
     "tool_calls": [
      {
@@ -153,62 +153,62 @@
      }
     ],
     "input_tokens": 4,
-    "cache_write_tokens": 3515,
-    "cache_read_tokens": 6934,
-    "output_tokens": 502
+    "cache_write_tokens": 3611,
+    "cache_read_tokens": 7030,
+    "output_tokens": 573
    },
    {
     "step": "explainer",
     "agent": "explainer",
     "model": "claude-sonnet-5",
     "provider": "claude-subscription",
-    "latency_s": 15.98,
-    "cost_usd": 0.0286526,
+    "latency_s": 17.37,
+    "cost_usd": 0.029472599999999998,
     "turns": 2,
     "tool_calls": [],
     "input_tokens": 2,
-    "cache_write_tokens": 2422,
+    "cache_write_tokens": 2477,
     "cache_read_tokens": 1753,
-    "output_tokens": 1861
+    "output_tokens": 1921
    }
   ],
   "totals": {
    "input_tokens": 8,
-   "cache_write_tokens": 6997,
-   "cache_read_tokens": 13159,
-   "output_tokens": 4472
+   "cache_write_tokens": 6088,
+   "cache_read_tokens": 14315,
+   "output_tokens": 4361
   },
-  "total_tokens": 24636,
-  "cost_usd": 0.1007,
-  "elapsed_s": 33.5,
+  "total_tokens": 24772,
+  "cost_usd": 0.0895,
+  "elapsed_s": 33.7,
   "provider": "claude-subscription"
  },
  "hip": {
   "reading_grade_document": 7.7,
-  "reading_grade_plan": 4.3,
+  "reading_grade_plan": 4.7,
   "calls": [
    {
     "step": "reader",
     "agent": "reader",
     "model": "claude-opus-5-5",
     "provider": "claude-subscription",
-    "latency_s": 39.29,
-    "cost_usd": 0.1221024,
+    "latency_s": 36.45,
+    "cost_usd": 0.10040939999999998,
     "turns": 2,
     "tool_calls": [],
     "input_tokens": 2,
-    "cache_write_tokens": 1835,
-    "cache_read_tokens": 4472,
-    "output_tokens": 5326
+    "cache_write_tokens": 0,
+    "cache_read_tokens": 6307,
+    "output_tokens": 4957
    },
    {
     "step": "checker",
     "agent": "checker",
     "model": "claude-sonnet-5",
     "provider": "claude-subscription",
-    "latency_s": 10.1,
-    "cost_usd": 0.039208599999999996,
-    "turns": 8,
+    "latency_s": 8.38,
+    "cost_usd": 0.0374974,
+    "turns": 6,
     "tool_calls": [
      {
       "tool": "list_medication_lines",
@@ -225,13 +225,6 @@
      {
       "tool": "verify_item",
       "args": {
-       "item_id": "m2"
-      },
-      "result": "{\"verified\": true, \"score\": 1.0, \"problems\": []}"
-     },
-     {
-      "tool": "verify_item",
-      "args": {
        "item_id": "m3"
       },
       "result": "{\"verified\": true, \"score\": 1.0, \"problems\": []}"
@@ -242,44 +235,37 @@
        "item_id": "a1"
       },
       "result": "{\"verified\": true, \"score\": 1.0, \"problems\": []}"
-     },
-     {
-      "tool": "verify_item",
-      "args": {
-       "item_id": "a2"
-      },
-      "result": "{\"verified\": true, \"score\": 1.0, \"problems\": []}"
      }
     ],
     "input_tokens": 4,
-    "cache_write_tokens": 7326,
-    "cache_read_tokens": 10183,
-    "output_tokens": 786
+    "cache_write_tokens": 7325,
+    "cache_read_tokens": 10197,
+    "output_tokens": 615
    },
    {
     "step": "explainer",
     "agent": "explainer",
     "model": "claude-sonnet-5",
     "provider": "claude-subscription",
-    "latency_s": 42.46,
-    "cost_usd": 0.07151859999999999,
+    "latency_s": 38.16,
+    "cost_usd": 0.0653946,
     "turns": 2,
     "tool_calls": [],
     "input_tokens": 2,
-    "cache_write_tokens": 4671,
+    "cache_write_tokens": 4685,
     "cache_read_tokens": 1753,
-    "output_tokens": 5248
+    "output_tokens": 4630
    }
   ],
   "totals": {
    "input_tokens": 8,
-   "cache_write_tokens": 13832,
-   "cache_read_tokens": 16408,
-   "output_tokens": 11360
+   "cache_write_tokens": 12010,
+   "cache_read_tokens": 18257,
+   "output_tokens": 10202
   },
-  "total_tokens": 41608,
-  "cost_usd": 0.2328,
-  "elapsed_s": 81.8,
+  "total_tokens": 40477,
+  "cost_usd": 0.2033,
+  "elapsed_s": 74.7,
   "provider": "claude-subscription"
  }
 }

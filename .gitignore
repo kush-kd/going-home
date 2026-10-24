@@ -9,3 +9,5 @@ logs/*
 docs/shots/
 docs/video_raw/
 *.mp4
+docs/tts_models/
+docs/voice/
